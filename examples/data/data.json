@@ -1,1 +1,120 @@
-[]
+{
+	"vertices": [
+		{
+			"id": 0,
+			"name": "beep"
+		},
+		{
+			"id": 1,
+			"name": "boop"
+		},
+		{
+			"id": 2,
+			"name": "bop"
+		},
+		{
+			"id": 3,
+			"name": "foo"
+		},
+		{
+			"id": 4,
+			"name": "bar"
+		},
+		{
+			"id": 5,
+			"name": "baz"
+		},
+		{
+			"id": 6,
+			"name": "bap"
+		},
+		{
+			"id": 7,
+			"name": "buzz"
+		},
+		{
+			"id": 8,
+			"name": "fizz"
+		},
+		{
+			"id": 9,
+			"name": "bizz"
+		},
+		{
+			"id": 10,
+			"name": "woo"
+		}
+	],
+	"edges": [
+		{
+			"source": 0,
+			"target": 1,
+			"weight": 15
+		},
+		{
+			"source": 0,
+			"target": 2,
+			"weight": 12
+		},
+		{
+			"source": 0,
+			"target": 3,
+			"weight": 3
+		},
+		{
+			"source": 0,
+			"target": 4,
+			"weight": 1
+		},
+		{
+			"source": 1,
+			"target": 5,
+			"weight": 14
+		},
+		{
+			"source": 1,
+			"target": 7,
+			"weight": 1
+		},
+		{
+			"source": 2,
+			"target": 3,
+			"weight": 9
+		},
+		{
+			"source": 4,
+			"target": 10,
+			"weight": 11
+		},
+		{
+			"source": 5,
+			"target": 7,
+			"weight": 5
+		},
+		{
+			"source": 5,
+			"target": 8,
+			"weight": 6
+		},
+		{
+			"source": 6,
+			"target": 10,
+			"weight": 6
+		},
+		{
+			"source": 7,
+			"target": 10,
+			"weight": 9
+		},
+		{
+			"source": 8,
+			"target": 9,
+			"weight": 17
+		},
+		{
+			"source": 8,
+			"target": 10,
+			"weight": 13
+		}
+	]
+}
