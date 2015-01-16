@@ -55,6 +55,33 @@ var EVENTS = [
 ];
 
 
+// FUNCTIONS //
+
+function cx( d ) {
+	return d.x;
+}
+
+function cy( d ) {
+	return d.y;
+}
+
+function x1( d ) {
+	return d.source.x;
+}
+
+function y1( d ) {
+	return d.source.y;
+}
+
+function x2( d ) {
+	return d.target.x;
+}
+
+function y2( d ) {
+	return d.target.y;
+}
+
+
 // CHART //
 
 /**
@@ -198,6 +225,9 @@ Chart.prototype.init = function() {
 
 	// Private methods...
 
+	// Force...
+	this._force = d3.layout.force();
+
 	// Stream...
 	this._stream = null;
 
@@ -283,6 +313,8 @@ Chart.prototype.create = function() {
 	this
 		.createBase()
 		.createBackground()
+		.createLayout()
+		.createMarks()
 		.createVertices()
 		.createEdges()
 		.createTitle();
@@ -367,6 +399,127 @@ Chart.prototype.createBackground = function() {
 }; // end METHOD createBackground()
 
 /**
+* METHOD: createLayout()
+*	Creates the graph layout.
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.createLayout = function() {
+	var force = this._force;
+
+	force.nodes( this.vertices )
+		.edges( this.edges )
+		.start();
+
+	for ( var i = 0; i < this.vertices.length; i++ ) {
+		force.tick();
+	}
+	force.stop();
+}; // end METHOD createLayout()
+
+/**
+* METHOD: createMarks()
+*	Creates a graph marks element.
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.createMarks = function() {
+	// Remove any existing marks...
+	if ( this.$.marks ) {
+		this.$.marks.remove();
+	}
+	// Create a `marks` group:
+	this.$.marks = this.$.graph.append( 'svg:g' )
+		.attr( 'property', 'marks' )
+		.attr( 'class', 'marks' )
+		.attr( 'clip-path', 'url(#' + this._clipPathID + ')' );
+
+	// Add vertices:
+	this.$.vertices = this.$.marks.selectAll( '.vertex' )
+		.data( this.vertices )
+		.enter()
+		.append( 'svg:circle' )
+			.attr( 'property', 'circle vertex' )
+			.attr( 'class', 'vertex' )
+			// .attr( 'data-label', this._getLabel )
+			// .attr( 'color', this._getColor )
+			.attr( 'cx', cx )
+			.attr( 'cy', cy )
+			.attr( 'r', 5 );
+
+	// Add edges:
+	this.$.edges = this.$.marks.selectAll( '.edge' )
+		.data( this.edges )
+		.enter()
+		.append( 'svg:line' )
+			.attr( 'property', 'line edge' )
+			.attr( 'class', 'edge' )
+			// .attr( 'data-label', this._getLabel )
+			// .attr( 'color', this._getColor )
+			.attr( 'x1', x1 )
+			.attr( 'y1', y1 )
+			.attr( 'x2', x2 )
+			.attr( 'y2', y2 );
+
+	return this;
+}; // end METHOD createMarks()
+
+/**
+* METHOD: createVertices()
+*	Creates graph vertices.
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.createVertices = function() {
+	// Remove any existing vertices...
+	if ( this.$.vertices ) {
+		this.$.vertices.remove();
+	}
+	// Add vertices:
+	this.$.vertices = this.$.marks.selectAll( '.vertex' )
+		.data( this.vertices )
+		.enter()
+		.append( 'svg:circle' )
+			.attr( 'property', 'circle vertex' )
+			.attr( 'class', 'vertex' )
+			// .attr( 'data-label', this._getLabel )
+			// .attr( 'color', this._getColor )
+			.attr( 'cx', cx )
+			.attr( 'cy', cy )
+			.attr( 'r', 5 );
+
+	return this;
+}; // end METHOD createVertices()
+
+/**
+* METHOD: createEdges()
+*	Creates graph edges.
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.createEdges = function() {
+	// Remove any existing edges...
+	if ( this.$.edges ) {
+		this.$.edges.remove();
+	}
+	// Add edges:
+	this.$.edges = this.$.marks.selectAll( '.edge' )
+		.data( this.edges )
+		.enter()
+		.append( 'svg:line' )
+			.attr( 'property', 'line edge' )
+			.attr( 'class', 'edge' )
+			// .attr( 'data-label', this._getLabel )
+			// .attr( 'color', this._getColor )
+			.attr( 'x1', x1 )
+			.attr( 'y1', y1 )
+			.attr( 'x2', x2 )
+			.attr( 'y2', y2 );
+
+	return this;
+}; // end METHOD createEdges()
+
+/**
 * METHOD: createTitle()
 *	Creates the chart title.
 *
@@ -401,6 +554,148 @@ Chart.prototype.clear = function() {
 
 	return this;
 }; // end METHOD clear()
+
+/**
+* METHOD: resetLayout()
+*	Resets the graph layout.
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.resetLayout = function() {
+	var force = this._force;
+
+	force.start();
+	for ( var i = 0; i < this.vertices.length; i++ ) {
+		force.tick();
+	}
+	force.stop();
+
+	return this;
+}; // end METHOD resetLayout()
+
+/**
+* METHOD: resetMarks()
+*	Resets graph marks (vertices and edges).
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.resetMarks = function() {
+	var vertices, edges;
+
+	// Bind the data and update existing vertices:
+	vertices = this.$.marks.selectAll( '.vertex' )
+		.data( this.vertices )
+		.attr( 'cx', cx )
+		.attr( 'cy', cy );
+
+	// Remove any old vertices:
+	vertices.exit().remove();
+
+	// Add any new vertices:
+	vertices.enter().append( 'svg:circle' )
+		.attr( 'property', 'circle vertex' )
+		.attr( 'class', 'vertex' )
+		// .attr( 'data-label', this._getLabel )
+		// .attr( 'color', this._getColor )
+		.attr( 'cx', cx )
+		.attr( 'cy', cy );
+
+	// Cache a reference to the vertices:
+	this.$.vertices = vertices;
+
+	// Bind the data and update existing edges:
+	edges = this.$.marks.selectAll( '.edge' )
+		.data( this.edges )
+		.attr( 'x1', x1 )
+		.attr( 'y1', y1 )
+		.attr( 'x2', x2 )
+		.attr( 'y2', y2 );
+
+	// Remove any old edges:
+	edges.exit().remove();
+
+	// Add any new edges:
+	edges.enter().append( 'svg:line' )
+		.attr( 'property', 'line edge' )
+		.attr( 'class', 'edge' )
+		.attr( 'x1', x1 )
+		.attr( 'y1', y1 )
+		.attr( 'x2', x2 )
+		.attr( 'y2', y2 );
+
+	// Cache a reference to the edges:
+	this.$.edges = edges;
+
+	return this;
+}; // end METHOD resetMarks()
+
+/**
+* METHOD: resetVertices()
+*	Resets graph vertices.
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.resetVertices = function() {
+	var vertices;
+
+	// Bind the data and update existing vertices:
+	vertices = this.$.marks.selectAll( '.vertex' )
+		.data( this.vertices )
+		.attr( 'cx', cx )
+		.attr( 'cy', cy );
+
+	// Remove any old vertices:
+	vertices.exit().remove();
+
+	// Add any new vertices:
+	vertices.enter().append( 'svg:circle' )
+		.attr( 'property', 'circle vertex' )
+		.attr( 'class', 'vertex' )
+		// .attr( 'data-label', this._getLabel )
+		// .attr( 'color', this._getColor )
+		.attr( 'cx', cx )
+		.attr( 'cy', cy );
+
+	// Cache a reference to the vertices:
+	this.$.vertices = vertices;
+
+	return this;
+}; // end METHOD resetVertices()
+
+/**
+* METHOD: resetEdges()
+*	Resets graph edges.
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.resetEdges = function() {
+	var edges;
+
+	// Bind the data and update existing edges:
+	edges = this.$.marks.selectAll( '.edge' )
+		.data( this.edges )
+		.attr( 'x1', x1 )
+		.attr( 'y1', y1 )
+		.attr( 'x2', x2 )
+		.attr( 'y2', y2 );
+
+	// Remove any old edges:
+	edges.exit().remove();
+
+	// Add any new edges:
+	edges.enter().append( 'svg:line' )
+		.attr( 'property', 'line edge' )
+		.attr( 'class', 'edge' )
+		.attr( 'x1', x1 )
+		.attr( 'y1', y1 )
+		.attr( 'x2', x2 )
+		.attr( 'y2', y2 );
+
+	// Cache a reference to the edges:
+	this.$.edges = edges;
+
+	return this;
+}; // end METHOD resetEdges()
 
 /**
 * METHOD: graphWidth()
@@ -443,15 +738,15 @@ Chart.prototype.verticesChanged = function( val, newVal ) {
 	}
 	len = vertices.length;
 
+	// Update the force layout:
+	this._force.nodes( vertices );
+
 	// Do we even have any vertices?
 	if ( !len ) {
 		if ( this.$.vertices ) {
 			this.$.vertices.remove();
 		}
 		return;
-	}
-	if ( this.autoUpdate ) {
-		// TODO: update the graph (vertices and edges)
 	}
 	this.fire( 'vertices', {
 		'type': 'changed'
@@ -491,15 +786,15 @@ Chart.prototype.edgesChanged = function( val, newVal ) {
 	}
 	len = edges.length;
 
+	// Update the force layout:
+	this._force.links( edges );
+
 	// Do we even have any edges?
 	if ( !len ) {
 		if ( this.$.edges ) {
 			this.$.edges.remove();
 		}
 		return;
-	}
-	if ( this.autoUpdate ) {
-		// TODO: update the graph (vertices and edges)
 	}
 	this.fire( 'edges', {
 		'type': 'changed'

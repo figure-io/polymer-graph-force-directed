@@ -2,47 +2,47 @@
 	"vertices": [
 		{
 			"id": 0,
-			"name": "beep"
+			"label": "beep"
 		},
 		{
 			"id": 1,
-			"name": "boop"
+			"label": "boop"
 		},
 		{
 			"id": 2,
-			"name": "bop"
+			"label": "bop"
 		},
 		{
 			"id": 3,
-			"name": "foo"
+			"label": "foo"
 		},
 		{
 			"id": 4,
-			"name": "bar"
+			"label": "bar"
 		},
 		{
 			"id": 5,
-			"name": "baz"
+			"label": "baz"
 		},
 		{
 			"id": 6,
-			"name": "bap"
+			"label": "bap"
 		},
 		{
 			"id": 7,
-			"name": "buzz"
+			"label": "buzz"
 		},
 		{
 			"id": 8,
-			"name": "fizz"
+			"label": "fizz"
 		},
 		{
 			"id": 9,
-			"name": "bizz"
+			"label": "bizz"
 		},
 		{
 			"id": 10,
-			"name": "woo"
+			"label": "woo"
 		}
 	],
 	"edges": [
