@@ -1,0 +1,51 @@
+{
+  "name": "polymer-force-layout",
+  "version": "0.0.0",
+  "description": "A Polymer web component for displaying force-directed graphs.",
+  "authors": [
+    {
+      "name": "Athan Reines",
+      "email": "kgryte@gmail.com"
+    }
+  ],
+  "main": "./polymer-force-layout.html",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/figure-io/polymer-force-layout"
+  },
+  "keywords": [
+    "polymer",
+  	"web component",
+    "visualization",
+    "viz",
+    "ui",
+    "figure",
+    "chart",
+    "graph",
+    "data",
+    "force",
+    "layout",
+    "d3"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.1",
+    "polymer-d3": "figure-io/polymer-d3#~0.0.1",
+    "polymer-uuid": "kgryte/polymer-uuid#~0.0.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "~2.0.5"
+  },
+  "ignore": [
+    "test",
+    "node_modules",
+    "bower",
+    "src",
+    "etc",
+    "TODO.md",
+    ".*",
+    "Makefile",
+    "package.json",
+    "wct.conf.js"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,42 @@
+<!--
+	POLYMER-FORCE-LAYOUT
+
+	DESCRIPTION:
+		- `polymer-force-layout` is a UI element for displaying force-directed graphs.
+
+	EXAMPLE:
+		<polymer-force-layout id="chart"></polymer-force-layout>
+		...
+		var chart = this.$.chart;
+
+	@element polymer-force-layout
+	@status unstable
+-->
+
+<!-- POLYMER -->
+<link rel="import" href="../../polymer/polymer.html">
+
+<!-- DEPENDENCIES -->
+<link rel="import" href="../../polymer-uuid/polymer-uuid.html">
+<link rel="import" href="../../polymer-d3/polymer-d3.html">
+
+<!-- ELEMENT -->
+<polymer-element name="polymer-force-layout" attributes="data config width height chartTitle paddingLeft paddingRight paddingBottom paddingTop autoResize">
+
+	<template>
+
+		<!-- STYLESHEETS -->
+		<link rel="stylesheet" href="./css/reset.css">
+		<link rel="stylesheet" href="./css/styles.css">
+		<link rel="stylesheet" href="./css/chart.css">
+		<link rel="stylesheet" href="./css/media-queries.css">
+
+		<!-- PRESENTATION CONTENT -->
+		<div class="chart" id="chart"></div>
+
+	</template>
+
+	<!-- REGISTRATION -->
+	<script src="./js/script.js"></script>
+
+</polymer-element>
