@@ -54,10 +54,14 @@
 			charts[ i ] = figs[ i ].querySelector( '.chart' );
 		}
 
-		// [1] Configure the figure...
+		// [1] Parse the data:
+		body = JSON.parse( body );
+
+		// [2] Configure the figure...
 		el = charts[ 0 ];
 
-		el.data = JSON.parse( body );
+		el.vertices = body.vertices;
+		el.edges = body.edges;
 	} // end FUNCTION onData()
 
 

@@ -41,7 +41,8 @@ var // Writable stream constructor:
 // VARIABLES //
 
 var EVENTS = [
-	'data',
+	'vertices',
+	'edges',
 
 	'width',
 	'height',
@@ -75,36 +76,36 @@ function Chart() {
 *	Chart canvas left padding.
 *
 * @type {Number}
-* @default 90px
+* @default 40px
 */
-Chart.prototype.paddingLeft = 90;
+Chart.prototype.paddingLeft = 40;
 
 /**
 * ATTRIBUTE: paddingRight
 *	Chart canvas right padding.
 *
 * @type {Number}
-* @default 0px
+* @default 40px
 */
-Chart.prototype.paddingRight = 20;
+Chart.prototype.paddingRight = 40;
 
 /**
 * ATTRIBUTE: paddingBottom
 *	Chart canvas bottom padding.
 *
 * @type {Number}
-* @default 80px
+* @default 40px
 */
-Chart.prototype.paddingBottom = 80;
+Chart.prototype.paddingBottom = 40;
 
 /**
 * ATTRIBUTE: paddingTop
 *	Chart canvas top padding.
 *
 * @type {Number}
-* @default 80px
+* @default 40px
 */
-Chart.prototype.paddingTop = 80;
+Chart.prototype.paddingTop = 40;
 
 /**
 * ATTRIBUTE: width
@@ -189,8 +190,11 @@ Chart.prototype.init = function() {
 	// Events: (hint an array)
 	this.events = EVENTS;
 
-	// Data: (hint an array)
-	this.data = [];
+	// Vertices: (hint an array)
+	this.vertices = [];
+
+	// Edges: (hint an array)
+	this.edges = [];
 
 	// Private methods...
 
@@ -216,6 +220,8 @@ Chart.prototype.init = function() {
 
 	// Data elements...
 	$.marks = null;
+	$.vertices = null;
+	$.edges = null;
 
 	// Clip path...
 	this._clipPathID = this._uuid.v4();
@@ -277,6 +283,8 @@ Chart.prototype.create = function() {
 	this
 		.createBase()
 		.createBackground()
+		.createVertices()
+		.createEdges()
 		.createTitle();
 
 	return this;
@@ -387,8 +395,9 @@ Chart.prototype.createTitle = function() {
 Chart.prototype.clear = function() {
 	// TODO: should meta data (e.g., title) be cleared as well?
 
-	// Remove data:
-	this.data.length = 0;
+	// Remove the graph:
+	this.vertices.length = 0;
+	this.edges.length = 0;
 
 	return this;
 }; // end METHOD clear()
@@ -414,87 +423,100 @@ Chart.prototype.graphHeight = function() {
 }; // end METHOD graphHeight()
 
 /**
-* METHOD: autoUpdateChanged( oldVal, newVal )
-*	Event handler invoked when the `autoUpdate` attribute changes.
-*
-* @param {Boolean} oldVal - old value
-* @param {Boolean} newVal - new value
-*/
-Chart.prototype.autoUpdateChanged = function( oldVal, newVal ) {
-	var err;
-	if ( typeof newVal !== 'boolean' ) {
-		err = new TypeError( 'autoUpdate::invalid assignment. Must be a boolean.  Value: `' + newVal + '.' );
-		this.fire( 'err', err );
-		this.autoUpdate = oldVal;
-		return;
-	}
-	this.fire( 'changed', {
-		'attr': 'autoUpdate',
-		'prev': oldVal,
-		'curr': newVal
-	});
-}; // end METHOD autoUpdateChanged()
-
-/**
-* METHOD: dataChanged( val[, newVal] )
-*	Event handler invoked when the `data` attribute changes.
+* METHOD: verticesChanged( val[, newVal] )
+*	Event handler invoked when the `vertices` attribute changes.
 *
 * @param {Array} val - change event value
 * @param {Array} [newVal] - new value
 */
-Chart.prototype.dataChanged = function( val, newVal ) {
-	var data = this.data,
+Chart.prototype.verticesChanged = function( val, newVal ) {
+	var vertices = this.vertices,
 		len,
-		err,
-		i;
+		err;
 
-	// Determine if we have a new data array...
+	// Determine if we have a new vertices array...
 	if ( arguments.length > 1 && !Array.isArray( newVal ) ) {
-		err = new TypeError( 'data::invalid assignment. Must provide an array. Value: `' + newVal + '`.' );
+		err = new TypeError( 'vertices::invalid assignment. Must provide an array. Value: `' + newVal + '`.' );
 		this.fire( 'err', err );
-		this.data = val;
+		this.vertices = val;
 		return;
 	}
-	len = data.length;
-	// Validate that all array elements are arrays...
-	for ( i = 0; i < len; i++ ) {
-		// TODO: validate data
-		// if ( !Array.isArray( data[ i ] ) ) {
-		// 	val = data.splice( i, 1 );
-		// 	err = new TypeError( 'data::invalid assignment. Data must be an array of arrays. Invalid array element: `' + val + '`.' );
-		// 	this.fire( 'err', err );
-		// 	return;
-		// }
-	}
-	// Do we even have any data arrays?
+	len = vertices.length;
+
+	// Do we even have any vertices?
 	if ( !len ) {
 		if ( this.$.vertices ) {
 			this.$.vertices.remove();
 		}
+		return;
+	}
+	if ( this.autoUpdate ) {
+		// TODO: update the graph (vertices and edges)
+	}
+	this.fire( 'vertices', {
+		'type': 'changed'
+	});
+	if ( newVal === void 0 ) {
+		this.fire( 'changed', {
+			'attr': 'vertices',
+			'data': val[ 0 ]
+		});
+	} else {
+		this.fire( 'changed', {
+			'attr': 'vertices',
+			'prev': val,
+			'curr': newVal
+		});
+	}
+}; // end METHOD verticesChanged()
+
+/**
+* METHOD: edgesChanged( val[, newVal] )
+*	Event handler invoked when the `edges` attribute changes.
+*
+* @param {Array} val - change event value
+* @param {Array} [newVal] - new value
+*/
+Chart.prototype.edgesChanged = function( val, newVal ) {
+	var edges = this.edges,
+		len,
+		err;
+
+	// Determine if we have a new edges array...
+	if ( arguments.length > 1 && !Array.isArray( newVal ) ) {
+		err = new TypeError( 'edges::invalid assignment. Must provide an array. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.edges = val;
+		return;
+	}
+	len = edges.length;
+
+	// Do we even have any edges?
+	if ( !len ) {
 		if ( this.$.edges ) {
 			this.$.edges.remove();
 		}
 		return;
 	}
 	if ( this.autoUpdate ) {
-		// TODO: update vertices and edges
+		// TODO: update the graph (vertices and edges)
 	}
-	this.fire( 'data', {
+	this.fire( 'edges', {
 		'type': 'changed'
 	});
 	if ( newVal === void 0 ) {
 		this.fire( 'changed', {
-			'attr': 'data',
+			'attr': 'edges',
 			'data': val[ 0 ]
 		});
 	} else {
 		this.fire( 'changed', {
-			'attr': 'data',
+			'attr': 'edges',
 			'prev': val,
 			'curr': newVal
 		});
 	}
-}; // end METHOD dataChanged()
+}; // end METHOD edgesChanged()
 
 /**
 * METHOD: configChanged( oldConfig, newConfig )
@@ -562,16 +584,16 @@ Chart.prototype.widthChanged = function( oldVal, newVal ) {
 		return;
 	}
 	if ( this.autoUpdate ) {
-		// [1] Update the SVG canvas:
+		// [0] Update the SVG canvas:
 		this.$.canvas.attr( 'width', newVal );
 
-		// [2] Update the background:
+		// [1] Update the background:
 		this.$.bkgd.attr( 'width', width );
 
-		// [3] Update the clipPath:
+		// [2] Update the clipPath:
 		this.$.clipPath.attr( 'width', width );
 
-		// TODO: update vertices and edges
+		// TODO: update graph (vertices and edges)
 	}
 	this.fire( 'width', {
 		'type': 'changed'
@@ -605,16 +627,16 @@ Chart.prototype.heightChanged = function( oldVal, newVal ) {
 		return;
 	}
 	if ( this.autoUpdate ) {
-		// [1] Update the SVG canvas:
+		// [0] Update the SVG canvas:
 		this.$.canvas.attr( 'height', newVal );
 
-		// [2] Update the background:
+		// [1] Update the background:
 		this.$.bkgd.attr( 'height', height );
 
-		// [3] Update the clipPath:
+		// [2] Update the clipPath:
 		this.$.clipPath.attr( 'height', height );
 
-		// TODO: update vertices and edges
+		// TODO: update graph (vertices and edges)
 	}
 	this.fire( 'height', {
 		'type': 'changed'
@@ -671,16 +693,16 @@ Chart.prototype.paddingLeftChanged = function( oldVal, newVal ) {
 	width = this.width - newVal - this.paddingRight;
 
 	if ( this.autoUpdate ) {
-		// [1] Update the background:
+		// [0] Update the background:
 		this.$.bkgd.attr( 'width', width );
 
-		// [2] Update the clipPath:
+		// [1] Update the clipPath:
 		this.$.clipPath.attr( 'width', width );
 
-		// [3] Update the graph:
+		// [2] Update the graph:
 		this.$.graph.attr( 'transform', 'translate(' + newVal + ',' + this.paddingTop + ')' );
 
-		// TODO: update vertices and edges
+		// TODO: update graph (vertices and edges)
 	}
 	this.fire( 'changed', {
 		'attr': 'paddingLeft',
@@ -709,13 +731,13 @@ Chart.prototype.paddingRightChanged = function( oldVal, newVal ) {
 	width = this.width - this.paddingLeft - newVal;
 
 	if ( this.autoUpdate ) {
-		// [1] Update the background:
+		// [0] Update the background:
 		this.$.bkgd.attr( 'width', width );
 
-		// [2] Update the clipPath:
+		// [1] Update the clipPath:
 		this.$.clipPath.attr( 'width', width );
 
-		// TODO: update vertices and edges
+		// TODO: update graph (vertices and edges)
 	}
 	this.fire( 'changed', {
 		'attr': 'paddingRight',
@@ -744,13 +766,13 @@ Chart.prototype.paddingBottomChanged = function( oldVal, newVal ) {
 	height = this.height - this.paddingTop - newVal;
 
 	if ( this.autoUpdate ) {
-		// [1] Update the background:
+		// [0] Update the background:
 		this.$.bkgd.attr( 'height', height );
 
-		// [2] Update the clipPath:
+		// [1] Update the clipPath:
 		this.$.clipPath.attr( 'height', height );
 
-		// TODO: update vertices and edges
+		// TODO: update the graph (vertices and edges)
 	}
 	this.fire( 'changed', {
 		'attr': 'paddingBottom',
@@ -779,16 +801,16 @@ Chart.prototype.paddingTopChanged = function( oldVal, newVal ) {
 	height = this.height - newVal - this.paddingBottom;
 
 	if ( this.autoUpdate ) {
-		// [1] Update the background:
+		// [0] Update the background:
 		this.$.bkgd.attr( 'height', height );
 
-		// [2] Update the clipPath:
+		// [1] Update the clipPath:
 		this.$.clipPath.attr( 'height', height );
 
-		// [3] Update the graph:
+		// [2] Update the graph:
 		this.$.graph.attr( 'transform', 'translate(' + this.paddingLeft + ',' + newVal + ')' );
 
-		// TODO: update vertices and edges
+		// TODO: update the graph (vertices and edges)
 	}
 	this.fire( 'changed', {
 		'attr': 'paddingTop',
@@ -796,6 +818,28 @@ Chart.prototype.paddingTopChanged = function( oldVal, newVal ) {
 		'curr': newVal
 	});
 }; // end METHOD paddingTopChanged()
+
+/**
+* METHOD: autoUpdateChanged( oldVal, newVal )
+*	Event handler invoked when the `autoUpdate` attribute changes.
+*
+* @param {Boolean} oldVal - old value
+* @param {Boolean} newVal - new value
+*/
+Chart.prototype.autoUpdateChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'boolean' ) {
+		err = new TypeError( 'autoUpdate::invalid assignment. Must be a boolean.  Value: `' + newVal + '.' );
+		this.fire( 'err', err );
+		this.autoUpdate = oldVal;
+		return;
+	}
+	this.fire( 'changed', {
+		'attr': 'autoUpdate',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD autoUpdateChanged()
 
 /**
 * METHOD: autoResizeChanged( oldVal, newVal )

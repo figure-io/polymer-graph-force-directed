@@ -41,13 +41,36 @@ The component has the following public attributes and methods...
 
 ### Attributes
 
-#### el.data
+#### el.vertices
 
-Chart data. The expected format is an...
+Graph vertices.
 
 ``` javascript
-el.data = [];
+el.vertices = [
+	{'id': 0, 'name': 'beep'},
+	{'id': 1, 'name': 'boop'},
+	{'id': 2, 'name': 'foo'},
+	...
+];
 ```
+
+TODO: define vertex data behavior. How is that data made meaningful? Is it provided on events (hover, click, etc) along with position for the user to deal with, or some other mechanism?
+
+
+#### el.edges
+
+Graph edges.
+
+``` javascript
+el.edges = [
+	{'source': 0, 'target': 5},
+	{'source': 2, 'target': 14},
+	{'source': 7, 'target': 8},
+	...
+];
+```
+
+TODO: detail edge data structure.
 
 
 #### el.config
@@ -75,13 +98,13 @@ el.width = 600; // px
 Chart canvas height. If not explicitly set, default to the height of the parent node.
 
 ``` javascript
-el.height = 400; // px
+el.height = 600; // px
 ```
 
 
 #### el.paddingLeft
 
-Chart canvas left padding; i.e., space between the left canvas edge and the left graph edge. Typically needed to create room for a left oriented y-axis. Default is 90 pixels.
+Chart canvas left padding; i.e., space between the left canvas edge and the left graph edge. Typically needed to create room for a left oriented y-axis. Default is 40 pixels.
 
 ``` javascript
 el.paddingLeft = 120; // px
@@ -89,7 +112,7 @@ el.paddingLeft = 120; // px
 
 #### el.paddingRight
 
-Chart canvas right padding; i.e., space between the right canvas edge and the right graph edge. Typically needed to create room for a right oriented y-axis. Default is 20 pixels.
+Chart canvas right padding; i.e., space between the right canvas edge and the right graph edge. Typically needed to create room for a right oriented y-axis. Default is 40 pixels.
 
 ``` javascript
 el.paddingRight = 90; // px
@@ -97,7 +120,7 @@ el.paddingRight = 90; // px
 
 #### el.paddingTop
 
-Chart canvas top padding; i.e., space between the top canvas edge and the top graph edge. Typically needed to create room for a chart title or top positioned legend. Default is 80 pixels.
+Chart canvas top padding; i.e., space between the top canvas edge and the top graph edge. Typically needed to create room for a chart title or top positioned legend. Default is 40 pixels.
 
 ``` javascript
 el.paddingTop = 200; // px
@@ -105,7 +128,7 @@ el.paddingTop = 200; // px
 
 #### el.paddingBottom
 
-Chart canvas bottom padding; i.e., space between the bottom canvas edge and the bottom graph edge. Typically needed to create room for a bottom oriented x-axis or bottom positioned legend. Default is 80 pixels.
+Chart canvas bottom padding; i.e., space between the bottom canvas edge and the bottom graph edge. Typically needed to create room for a bottom oriented x-axis or bottom positioned legend. Default is 40 pixels.
 
 ``` javascript
 el.paddingBottom = 100; // px
@@ -188,13 +211,23 @@ el.addEventListener( 'changed', function onChange( evt ) {
 });
 ```
 
-#### 'data'
+#### 'vertices'
 
-The element emits a `data` event when the `data` attribute changes.
+The element emits a `vertices` event when the `vertices` attribute changes.
 
 ``` javascript
-el.addEventListener( 'data', function onEvent( evt ) {
-	console.log( this.data );
+el.addEventListener( 'vertices', function onEvent( evt ) {
+	console.log( this.vertices );
+});
+```
+
+#### 'edges'
+
+The element emits an `edges` event when the `edges` attribute changes.
+
+``` javascript
+el.addEventListener( 'edges', function onEvent( evt ) {
+	console.log( this.edges );
 });
 ```
 
