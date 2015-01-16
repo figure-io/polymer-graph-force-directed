@@ -3,16 +3,16 @@
 
 // TESTS //
 
-describe( 'data', function tests() {
+describe( 'vertices', function tests() {
 
 	var el = document.querySelector( '#fixture' );
 
-	it( 'should provide an attribute to set data', function test() {
-		expect( el.data ).to.be.an( 'array' );
+	it( 'should provide an attribute to set vertices', function test() {
+		expect( el.vertices ).to.be.an( 'array' );
 	});
 
 	it( 'should emit an `error` if set to a non-array', function test( done ) {
-		var data = el.data,
+		var vertices = el.vertices,
 			values;
 
 		values = [
@@ -31,7 +31,7 @@ describe( 'data', function tests() {
 		next();
 
 		function next() {
-			el.data = values.shift();
+			el.vertices = values.shift();
 		}
 		function onError( evt ) {
 			assert.instanceOf( evt.detail, TypeError );
@@ -42,7 +42,7 @@ describe( 'data', function tests() {
 			setTimeout( end, 0 );
 		}
 		function end() {
-			assert.deepEqual( el.data, data );
+			assert.deepEqual( el.vertices, vertices );
 			el.removeEventListener( 'err', onError );
 			done();
 		}
@@ -51,57 +51,55 @@ describe( 'data', function tests() {
 	it( 'should emit a `changed` event when set to a new value', function test( done ) {
 		el.addEventListener( 'changed', onChange );
 
-		el.data = [];
+		el.vertices = [];
 
 		function onChange( evt ) {
 			assert.isObject( evt.detail );
-			assert.strictEqual( evt.detail.attr, 'data' );
+			assert.strictEqual( evt.detail.attr, 'vertices' );
 			el.removeEventListener( 'changed', onChange );
 			done();
 		}
 	});
 
-	it( 'should emit a `data` event when set to a new value', function test( done ) {
-		el.addEventListener( 'data', onChange );
+	it( 'should emit a `vertices` event when set to a new value', function test( done ) {
+		el.addEventListener( 'vertices', onChange );
 
-		el.data = [];
+		el.vertices = [];
 
 		function onChange( evt ) {
 			assert.isObject( evt.detail );
 			assert.strictEqual( evt.detail.type, 'changed' );
-			el.removeEventListener( 'data', onChange );
+			el.removeEventListener( 'vertices', onChange );
 			done();
 		}
 	});
 
-	it( 'should emit a `changed` event when a datum is updated', function test( done ) {
+	it( 'should emit a `changed` event when a vertex is updated', function test( done ) {
 		el.addEventListener( 'changed', onChange );
 
-		el.data[ 0 ] = {};
+		el.vertices[ 0 ] = {};
 
 		function onChange( evt ) {
 			assert.isObject( evt.detail );
-			assert.strictEqual( evt.detail.attr, 'data' );
+			assert.strictEqual( evt.detail.attr, 'vertices' );
 			el.removeEventListener( 'changed', onChange );
 			done();
 		}
 	});
 
-	it( 'should emit a `data` event when a datum is updated', function test( done ) {
-		el.addEventListener( 'data', onChange );
+	it( 'should emit a `vertices` event when a vertex is updated', function test( done ) {
+		el.addEventListener( 'vertices', onChange );
 
-		el.data[ 0 ] = {};
+		el.vertices[ 0 ] = {};
 
 		function onChange( evt ) {
 			assert.isObject( evt.detail );
 			assert.strictEqual( evt.detail.type, 'changed' );
-			el.removeEventListener( 'data', onChange );
+			el.removeEventListener( 'vertices', onChange );
 			done();
 		}
 	});
 
-	it( 'should remove any existing vertex and edge elements if set to an empty array' );
-
-	it( 'should reset the chart vertex and edge elements' );
+	it( 'should remove any existing vertex elements if set to an empty array' );
 
 });

@@ -62,6 +62,8 @@
 
 		el.vertices = body.vertices;
 		el.edges = body.edges;
+
+		el.reset();
 	} // end FUNCTION onData()
 
 

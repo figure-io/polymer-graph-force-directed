@@ -18,7 +18,7 @@
 <link rel="import" href="../polymer-d3/polymer-d3.html">
 
 <!-- ELEMENT -->
-</head><body><polymer-element name="polymer-graph-force-directed" attributes="data config width height chartTitle paddingLeft paddingRight paddingBottom paddingTop autoResize" assetpath="build/">
+</head><body><polymer-element name="polymer-graph-force-directed" attributes="vertices edges config width height chartTitle paddingLeft paddingRight paddingBottom paddingTop autoResize autoUpdate" assetpath="build/">
 
 	<template>
 
@@ -103,6 +103,15 @@ table {
 	opacity: 0;
 }
 
+.graph .vertex {
+	fill: #474747;
+}
+
+.graph .edge {
+	stroke-width: 1;
+	stroke: #474747;
+}
+
 .meta .title {
 	display: block;
 	/*font-size: 2em;*/
@@ -176,7 +185,8 @@ var // Writable stream constructor:
 // VARIABLES //
 
 var EVENTS = [
-	'data',
+	'vertices',
+	'edges',
 
 	'width',
 	'height',
@@ -187,6 +197,33 @@ var EVENTS = [
 	'resized',
 	'clicked'
 ];
+
+
+// FUNCTIONS //
+
+function cx( d ) {
+	return d.x;
+}
+
+function cy( d ) {
+	return d.y;
+}
+
+function x1( d ) {
+	return d.source.x;
+}
+
+function y1( d ) {
+	return d.source.y;
+}
+
+function x2( d ) {
+	return d.target.x;
+}
+
+function y2( d ) {
+	return d.target.y;
+}
 
 
 // CHART //
@@ -210,36 +247,36 @@ function Chart() {
 *	Chart canvas left padding.
 *
 * @type {Number}
-* @default 90px
+* @default 40px
 */
-Chart.prototype.paddingLeft = 90;
+Chart.prototype.paddingLeft = 40;
 
 /**
 * ATTRIBUTE: paddingRight
 *	Chart canvas right padding.
 *
 * @type {Number}
-* @default 0px
+* @default 40px
 */
-Chart.prototype.paddingRight = 20;
+Chart.prototype.paddingRight = 40;
 
 /**
 * ATTRIBUTE: paddingBottom
 *	Chart canvas bottom padding.
 *
 * @type {Number}
-* @default 80px
+* @default 40px
 */
-Chart.prototype.paddingBottom = 80;
+Chart.prototype.paddingBottom = 40;
 
 /**
 * ATTRIBUTE: paddingTop
 *	Chart canvas top padding.
 *
 * @type {Number}
-* @default 80px
+* @default 40px
 */
-Chart.prototype.paddingTop = 80;
+Chart.prototype.paddingTop = 40;
 
 /**
 * ATTRIBUTE: width
@@ -324,10 +361,16 @@ Chart.prototype.init = function() {
 	// Events: (hint an array)
 	this.events = EVENTS;
 
-	// Data: (hint an array)
-	this.data = [];
+	// Vertices: (hint an array)
+	this.vertices = [];
+
+	// Edges: (hint an array)
+	this.edges = [];
 
 	// Private methods...
+
+	// Force...
+	this._force = d3.layout.force();
 
 	// Stream...
 	this._stream = null;
@@ -351,6 +394,8 @@ Chart.prototype.init = function() {
 
 	// Data elements...
 	$.marks = null;
+	$.vertices = null;
+	$.edges = null;
 
 	// Clip path...
 	this._clipPathID = this._uuid.v4();
@@ -412,6 +457,10 @@ Chart.prototype.create = function() {
 	this
 		.createBase()
 		.createBackground()
+		.createLayout()
+		.createMarks()
+		.createVertices()
+		.createEdges()
 		.createTitle();
 
 	return this;
@@ -494,6 +543,98 @@ Chart.prototype.createBackground = function() {
 }; // end METHOD createBackground()
 
 /**
+* METHOD: createLayout()
+*	Creates the graph layout.
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.createLayout = function() {
+	this._force
+		.nodes( this.vertices )
+		.links( this.edges )
+		.size( [this.width, this.height] )
+		.start()
+		.stop();
+
+	return this;
+}; // end METHOD createLayout()
+
+/**
+* METHOD: createMarks()
+*	Creates a graph marks element.
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.createMarks = function() {
+	// Remove any existing marks...
+	if ( this.$.marks ) {
+		this.$.marks.remove();
+	}
+	// Create a `marks` group:
+	this.$.marks = this.$.graph.append( 'svg:g' )
+		.attr( 'property', 'marks' )
+		.attr( 'class', 'marks' )
+		.attr( 'clip-path', 'url(#' + this._clipPathID + ')' );
+
+	return this;
+}; // end METHOD createMarks()
+
+/**
+* METHOD: createVertices()
+*	Creates graph vertices.
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.createVertices = function() {
+	// Remove any existing vertices...
+	if ( this.$.vertices ) {
+		this.$.vertices.remove();
+	}
+	// Add vertices:
+	this.$.vertices = this.$.marks.selectAll( '.vertex' )
+		.data( this.vertices )
+		.enter()
+		.append( 'svg:circle' )
+			.attr( 'property', 'circle vertex' )
+			.attr( 'class', 'vertex' )
+			// .attr( 'data-label', this._getLabel )
+			// .attr( 'color', this._getColor )
+			.attr( 'cx', cx )
+			.attr( 'cy', cy )
+			.attr( 'r', 5 );
+
+	return this;
+}; // end METHOD createVertices()
+
+/**
+* METHOD: createEdges()
+*	Creates graph edges.
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.createEdges = function() {
+	// Remove any existing edges...
+	if ( this.$.edges ) {
+		this.$.edges.remove();
+	}
+	// Add edges:
+	this.$.edges = this.$.marks.selectAll( '.edge' )
+		.data( this.edges )
+		.enter()
+		.append( 'svg:line' )
+			.attr( 'property', 'line edge' )
+			.attr( 'class', 'edge' )
+			// .attr( 'data-label', this._getLabel )
+			// .attr( 'color', this._getColor )
+			.attr( 'x1', x1 )
+			.attr( 'y1', y1 )
+			.attr( 'x2', x2 )
+			.attr( 'y2', y2 );
+
+	return this;
+}; // end METHOD createEdges()
+
+/**
 * METHOD: createTitle()
 *	Creates the chart title.
 *
@@ -522,11 +663,103 @@ Chart.prototype.createTitle = function() {
 Chart.prototype.clear = function() {
 	// TODO: should meta data (e.g., title) be cleared as well?
 
-	// Remove data:
-	this.data.length = 0;
+	// Remove the graph:
+	this.vertices.length = 0;
+	this.edges.length = 0;
 
 	return this;
 }; // end METHOD clear()
+
+// FIXME: remove once have more general solution
+Chart.prototype.reset = function() {
+	var force = this._force;
+
+	force
+		.nodes( this.vertices )
+		.links( this.edges )
+		.start();
+
+	for ( var i = 0; i < this.vertices.length*10; i++ ) {
+		force.tick();
+	}
+	force.stop();
+
+	this.resetMarks();
+	return this;
+};
+
+/**
+* METHOD: resetLayout()
+*	Resets the graph layout.
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.resetLayout = function() {
+	this._force
+		.nodes( this.vertices )
+		.links( this.edges )
+		.resume()
+		.stop();
+
+	return this;
+}; // end METHOD resetLayout()
+
+/**
+* METHOD: resetMarks()
+*	Resets graph marks (vertices and edges).
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.resetMarks = function() {
+	var vertices, edges;
+
+	// Bind the data and update existing vertices:
+	vertices = this.$.marks.selectAll( '.vertex' )
+		.data( this.vertices )
+		.attr( 'cx', cx )
+		.attr( 'cy', cy );
+
+	// Remove any old vertices:
+	vertices.exit().remove();
+
+	// Add any new vertices:
+	vertices.enter().append( 'svg:circle' )
+		.attr( 'property', 'circle vertex' )
+		.attr( 'class', 'vertex' )
+		// .attr( 'data-label', this._getLabel )
+		// .attr( 'color', this._getColor )
+		.attr( 'cx', cx )
+		.attr( 'cy', cy )
+		.attr( 'r', 5 );
+
+	// Cache a reference to the vertices:
+	this.$.vertices = vertices;
+
+	// Bind the data and update existing edges:
+	edges = this.$.marks.selectAll( '.edge' )
+		.data( this.edges )
+		.attr( 'x1', x1 )
+		.attr( 'y1', y1 )
+		.attr( 'x2', x2 )
+		.attr( 'y2', y2 );
+
+	// Remove any old edges:
+	edges.exit().remove();
+
+	// Add any new edges:
+	edges.enter().append( 'svg:line' )
+		.attr( 'property', 'line edge' )
+		.attr( 'class', 'edge' )
+		.attr( 'x1', x1 )
+		.attr( 'y1', y1 )
+		.attr( 'x2', x2 )
+		.attr( 'y2', y2 );
+
+	// Cache a reference to the edges:
+	this.$.edges = edges;
+
+	return this;
+}; // end METHOD resetMarks()
 
 /**
 * METHOD: graphWidth()
@@ -549,87 +782,100 @@ Chart.prototype.graphHeight = function() {
 }; // end METHOD graphHeight()
 
 /**
-* METHOD: autoUpdateChanged( oldVal, newVal )
-*	Event handler invoked when the `autoUpdate` attribute changes.
-*
-* @param {Boolean} oldVal - old value
-* @param {Boolean} newVal - new value
-*/
-Chart.prototype.autoUpdateChanged = function( oldVal, newVal ) {
-	var err;
-	if ( typeof newVal !== 'boolean' ) {
-		err = new TypeError( 'autoUpdate::invalid assignment. Must be a boolean.  Value: `' + newVal + '.' );
-		this.fire( 'err', err );
-		this.autoUpdate = oldVal;
-		return;
-	}
-	this.fire( 'changed', {
-		'attr': 'autoUpdate',
-		'prev': oldVal,
-		'curr': newVal
-	});
-}; // end METHOD autoUpdateChanged()
-
-/**
-* METHOD: dataChanged( val[, newVal] )
-*	Event handler invoked when the `data` attribute changes.
+* METHOD: verticesChanged( val[, newVal] )
+*	Event handler invoked when the `vertices` attribute changes.
 *
 * @param {Array} val - change event value
 * @param {Array} [newVal] - new value
 */
-Chart.prototype.dataChanged = function( val, newVal ) {
-	var data = this.data,
+Chart.prototype.verticesChanged = function( val, newVal ) {
+	var vertices = this.vertices,
 		len,
-		err,
-		i;
+		err;
 
-	// Determine if we have a new data array...
+	// Determine if we have a new vertices array...
 	if ( arguments.length > 1 && !Array.isArray( newVal ) ) {
-		err = new TypeError( 'data::invalid assignment. Must provide an array. Value: `' + newVal + '`.' );
+		err = new TypeError( 'vertices::invalid assignment. Must provide an array. Value: `' + newVal + '`.' );
 		this.fire( 'err', err );
-		this.data = val;
+		this.vertices = val;
 		return;
 	}
-	len = data.length;
-	// Validate that all array elements are arrays...
-	for ( i = 0; i < len; i++ ) {
-		// TODO: validate data
-		// if ( !Array.isArray( data[ i ] ) ) {
-		// 	val = data.splice( i, 1 );
-		// 	err = new TypeError( 'data::invalid assignment. Data must be an array of arrays. Invalid array element: `' + val + '`.' );
-		// 	this.fire( 'err', err );
-		// 	return;
-		// }
-	}
-	// Do we even have any data arrays?
+	len = vertices.length;
+
+	// Update the force layout:
+	this._force.nodes( vertices );
+
+	// Do we even have any vertices?
 	if ( !len ) {
 		if ( this.$.vertices ) {
 			this.$.vertices.remove();
 		}
+		return;
+	}
+	this.fire( 'vertices', {
+		'type': 'changed'
+	});
+	if ( newVal === void 0 ) {
+		this.fire( 'changed', {
+			'attr': 'vertices',
+			'data': val[ 0 ]
+		});
+	} else {
+		this.fire( 'changed', {
+			'attr': 'vertices',
+			'prev': val,
+			'curr': newVal
+		});
+	}
+}; // end METHOD verticesChanged()
+
+/**
+* METHOD: edgesChanged( val[, newVal] )
+*	Event handler invoked when the `edges` attribute changes.
+*
+* @param {Array} val - change event value
+* @param {Array} [newVal] - new value
+*/
+Chart.prototype.edgesChanged = function( val, newVal ) {
+	var edges = this.edges,
+		len,
+		err;
+
+	// Determine if we have a new edges array...
+	if ( arguments.length > 1 && !Array.isArray( newVal ) ) {
+		err = new TypeError( 'edges::invalid assignment. Must provide an array. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.edges = val;
+		return;
+	}
+	len = edges.length;
+
+	// Update the force layout:
+	this._force.links( edges );
+
+	// Do we even have any edges?
+	if ( !len ) {
 		if ( this.$.edges ) {
 			this.$.edges.remove();
 		}
 		return;
 	}
-	if ( this.autoUpdate ) {
-		// TODO: update vertices and edges
-	}
-	this.fire( 'data', {
+	this.fire( 'edges', {
 		'type': 'changed'
 	});
 	if ( newVal === void 0 ) {
 		this.fire( 'changed', {
-			'attr': 'data',
+			'attr': 'edges',
 			'data': val[ 0 ]
 		});
 	} else {
 		this.fire( 'changed', {
-			'attr': 'data',
+			'attr': 'edges',
 			'prev': val,
 			'curr': newVal
 		});
 	}
-}; // end METHOD dataChanged()
+}; // end METHOD edgesChanged()
 
 /**
 * METHOD: configChanged( oldConfig, newConfig )
@@ -684,6 +930,7 @@ Chart.prototype.configChanged = function( oldConfig, newConfig ) {
 */
 Chart.prototype.widthChanged = function( oldVal, newVal ) {
 	var width,
+		size,
 		err;
 	if ( typeof newVal !== 'number' || newVal !== newVal || newVal <= 0 ) {
 		err = new TypeError( 'width::invalid assignment. Must be a number greater than 0. Value: `' + newVal + '`.' );
@@ -693,20 +940,21 @@ Chart.prototype.widthChanged = function( oldVal, newVal ) {
 	}
 	width = newVal - this.paddingLeft - this.paddingRight;
 
+	size = this._force.size();
+	this._force.size( [width, size[1]] );
+
 	if ( !this.$.canvas ) {
 		return;
 	}
 	if ( this.autoUpdate ) {
-		// [1] Update the SVG canvas:
+		// [0] Update the SVG canvas:
 		this.$.canvas.attr( 'width', newVal );
 
-		// [2] Update the background:
+		// [1] Update the background:
 		this.$.bkgd.attr( 'width', width );
 
-		// [3] Update the clipPath:
+		// [2] Update the clipPath:
 		this.$.clipPath.attr( 'width', width );
-
-		// TODO: update vertices and edges
 	}
 	this.fire( 'width', {
 		'type': 'changed'
@@ -727,6 +975,7 @@ Chart.prototype.widthChanged = function( oldVal, newVal ) {
 */
 Chart.prototype.heightChanged = function( oldVal, newVal ) {
 	var height,
+		size,
 		err;
 	if ( typeof newVal !== 'number' || newVal !== newVal || newVal <= 0 ) {
 		err = new TypeError( 'height::invalid assignment. Must be a number greater than 0. Value: `' + newVal + '`.' );
@@ -736,20 +985,21 @@ Chart.prototype.heightChanged = function( oldVal, newVal ) {
 	}
 	height = newVal - this.paddingTop - this.paddingBottom;
 
+	size = this._force.size();
+	this._force.size( [size[0], height] );
+
 	if ( !this.$.canvas ) {
 		return;
 	}
 	if ( this.autoUpdate ) {
-		// [1] Update the SVG canvas:
+		// [0] Update the SVG canvas:
 		this.$.canvas.attr( 'height', newVal );
 
-		// [2] Update the background:
+		// [1] Update the background:
 		this.$.bkgd.attr( 'height', height );
 
-		// [3] Update the clipPath:
+		// [2] Update the clipPath:
 		this.$.clipPath.attr( 'height', height );
-
-		// TODO: update vertices and edges
 	}
 	this.fire( 'height', {
 		'type': 'changed'
@@ -795,6 +1045,7 @@ Chart.prototype.chartTitleChanged = function( oldVal, newVal ) {
 */
 Chart.prototype.paddingLeftChanged = function( oldVal, newVal ) {
 	var width,
+		size,
 		err;
 
 	if ( typeof newVal !== 'number' || newVal !== newVal || newVal%1 !== 0 || newVal < 0 ) {
@@ -805,17 +1056,18 @@ Chart.prototype.paddingLeftChanged = function( oldVal, newVal ) {
 	}
 	width = this.width - newVal - this.paddingRight;
 
+	size = this._force.size();
+	this._force.size( [width, size[1]] );
+
 	if ( this.autoUpdate ) {
-		// [1] Update the background:
+		// [0] Update the background:
 		this.$.bkgd.attr( 'width', width );
 
-		// [2] Update the clipPath:
+		// [1] Update the clipPath:
 		this.$.clipPath.attr( 'width', width );
 
-		// [3] Update the graph:
+		// [2] Update the graph:
 		this.$.graph.attr( 'transform', 'translate(' + newVal + ',' + this.paddingTop + ')' );
-
-		// TODO: update vertices and edges
 	}
 	this.fire( 'changed', {
 		'attr': 'paddingLeft',
@@ -833,6 +1085,7 @@ Chart.prototype.paddingLeftChanged = function( oldVal, newVal ) {
 */
 Chart.prototype.paddingRightChanged = function( oldVal, newVal ) {
 	var width,
+		size,
 		err;
 
 	if ( typeof newVal !== 'number' || newVal !== newVal || newVal%1 !== 0 || newVal < 0 ) {
@@ -843,14 +1096,15 @@ Chart.prototype.paddingRightChanged = function( oldVal, newVal ) {
 	}
 	width = this.width - this.paddingLeft - newVal;
 
+	size = this._force.size();
+	this._force.size( [width, size[1]] );
+
 	if ( this.autoUpdate ) {
-		// [1] Update the background:
+		// [0] Update the background:
 		this.$.bkgd.attr( 'width', width );
 
-		// [2] Update the clipPath:
+		// [1] Update the clipPath:
 		this.$.clipPath.attr( 'width', width );
-
-		// TODO: update vertices and edges
 	}
 	this.fire( 'changed', {
 		'attr': 'paddingRight',
@@ -868,6 +1122,7 @@ Chart.prototype.paddingRightChanged = function( oldVal, newVal ) {
 */
 Chart.prototype.paddingBottomChanged = function( oldVal, newVal ) {
 	var height,
+		size,
 		err;
 
 	if ( typeof newVal !== 'number' || newVal !== newVal || newVal%1 !== 0 || newVal < 0 ) {
@@ -878,14 +1133,15 @@ Chart.prototype.paddingBottomChanged = function( oldVal, newVal ) {
 	}
 	height = this.height - this.paddingTop - newVal;
 
+	size = this._force.size();
+	this._force.size( [size[0], height] );
+
 	if ( this.autoUpdate ) {
-		// [1] Update the background:
+		// [0] Update the background:
 		this.$.bkgd.attr( 'height', height );
 
-		// [2] Update the clipPath:
+		// [1] Update the clipPath:
 		this.$.clipPath.attr( 'height', height );
-
-		// TODO: update vertices and edges
 	}
 	this.fire( 'changed', {
 		'attr': 'paddingBottom',
@@ -903,6 +1159,7 @@ Chart.prototype.paddingBottomChanged = function( oldVal, newVal ) {
 */
 Chart.prototype.paddingTopChanged = function( oldVal, newVal ) {
 	var height,
+		size,
 		err;
 
 	if ( typeof newVal !== 'number' || newVal !== newVal || newVal%1 !== 0 || newVal < 0 ) {
@@ -913,17 +1170,18 @@ Chart.prototype.paddingTopChanged = function( oldVal, newVal ) {
 	}
 	height = this.height - newVal - this.paddingBottom;
 
+	size = this._force.size();
+	this._force.size( [size[0], height] );
+
 	if ( this.autoUpdate ) {
-		// [1] Update the background:
+		// [0] Update the background:
 		this.$.bkgd.attr( 'height', height );
 
-		// [2] Update the clipPath:
+		// [1] Update the clipPath:
 		this.$.clipPath.attr( 'height', height );
 
-		// [3] Update the graph:
+		// [2] Update the graph:
 		this.$.graph.attr( 'transform', 'translate(' + this.paddingLeft + ',' + newVal + ')' );
-
-		// TODO: update vertices and edges
 	}
 	this.fire( 'changed', {
 		'attr': 'paddingTop',
@@ -931,6 +1189,28 @@ Chart.prototype.paddingTopChanged = function( oldVal, newVal ) {
 		'curr': newVal
 	});
 }; // end METHOD paddingTopChanged()
+
+/**
+* METHOD: autoUpdateChanged( oldVal, newVal )
+*	Event handler invoked when the `autoUpdate` attribute changes.
+*
+* @param {Boolean} oldVal - old value
+* @param {Boolean} newVal - new value
+*/
+Chart.prototype.autoUpdateChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'boolean' ) {
+		err = new TypeError( 'autoUpdate::invalid assignment. Must be a boolean.  Value: `' + newVal + '.' );
+		this.fire( 'err', err );
+		this.autoUpdate = oldVal;
+		return;
+	}
+	this.fire( 'changed', {
+		'attr': 'autoUpdate',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD autoUpdateChanged()
 
 /**
 * METHOD: autoResizeChanged( oldVal, newVal )
@@ -5559,7 +5839,7 @@ function objectToString(o) {
 }).call(this,require("buffer").Buffer)
 },{"buffer":6}],22:[function(require,module,exports){
 module.exports=require(11)
-},{"/Users/kgryte/Coding/projects/personal/polymer-force-layout/polymer-force-layout/node_modules/browserify/node_modules/inherits/inherits_browser.js":11}],23:[function(require,module,exports){
+},{"/Users/kgryte/Coding/projects/personal/polymer-graph-force-directed/polymer-graph-force-directed/node_modules/browserify/node_modules/inherits/inherits_browser.js":11}],23:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
