@@ -5,7 +5,8 @@ TODO
 2. Update favicon
 3. Update stream implementation
 	- readable state should be object mode
-4. 
+4. change all force layout to graph-force-directed
+	-	repo name
 
 
 ## Tests

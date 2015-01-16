@@ -1,10 +1,10 @@
 /**
 *
-*	COMPONENT: polymer-force-layout
+*	COMPONENT: polymer-graph-force-directed
 *
 *
 *	DESCRIPTION:
-*		- Registers the polymer-force-layout web-component.
+*		- Registers the polymer-graph-force-directed web-component.
 *
 *
 *	NOTES:
@@ -36,4 +36,4 @@ var Chart = require( './chart.js' );
 
 // POLYMER //
 
-Polymer( 'polymer-force-layout', Chart.prototype );
+Polymer( 'polymer-graph-force-directed', Chart.prototype );

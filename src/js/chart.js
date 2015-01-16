@@ -324,14 +324,14 @@ Chart.prototype.createBase = function() {
 	this.$.graph = canvas.append( 'svg:g' )
 		.attr( 'property', 'graph' )
 		.attr( 'class', 'graph' )
-		.attr( 'data-graph-type', 'force-layout' )
+		.attr( 'data-graph-type', 'graph-force-directed' )
 		.attr( 'transform', 'translate(' + pLeft + ',' + pTop + ')' );
 
 	// Create the meta element:
 	this.$.meta = canvas.append( 'svg:g' )
 		.attr( 'property', 'meta' )
 		.attr( 'class', 'meta' )
-		.attr( 'data-graph-type', 'force-layout' )
+		.attr( 'data-graph-type', 'graph-force-directed' )
 		.attr( 'transform', 'translate(0,0)' );
 
 	return this;
@@ -830,7 +830,7 @@ Chart.prototype.autoResizeChanged = function( oldVal, newVal ) {
 */
 Chart.prototype.onResize = function() {
 	this.fire( 'resized', {
-		'el': 'polymer-force-layout',
+		'el': 'polymer-graph-force-directed',
 		'msg': 'Received a resize event.'
 	});
 	if ( !this.$.canvas ) {

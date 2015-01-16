@@ -1,4 +1,4 @@
-Force Layout
+Force-Directed Graph
 ===
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependencies][dependencies-image]][dependencies-url]
 
@@ -8,7 +8,7 @@ Force Layout
 ## Install
 
 ``` bash
-$ bower install figure-io/polymer-force-layout
+$ bower install figure-io/polymer-graph-force-directed
 ```
 
 
@@ -21,10 +21,10 @@ To use the component,
 <html>
 	<head>
 		<script src="path/to/webcomponentsjs/webcomponents.min.js"></script>
-		<link rel="import" href="path/to/polymer-force-layout">
+		<link rel="import" href="path/to/polymer-graph-force-directed">
 	</head>
 	<body>
-		<polymer-force-layout id="chart"></polymer-force-layout>
+		<polymer-graph-force-directed id="chart"></polymer-graph-force-directed>
 	</body>
 </html>
 ```
@@ -255,7 +255,7 @@ $ python -m SimpleHTTPServer 9090
 Once the server is running, open the following URL in your browser
 
 ```
-http://127.0.0.1:9090/polymer-force-layout/examples
+http://127.0.0.1:9090/polymer-graph-force-directed/examples
 ```
 
 
@@ -329,18 +329,18 @@ Copyright &copy; 2015. Athan Reines.
 [npm-image]: http://img.shields.io/npm/v/.svg
 [npm-url]: https://npmjs.org/package/
 
-[travis-image]: http://img.shields.io/travis/figure-io/polymer-force-layout/master.svg
-[travis-url]: https://travis-ci.org/figure-io/polymer-force-layout
+[travis-image]: http://img.shields.io/travis/figure-io/polymer-graph-force-directed/master.svg
+[travis-url]: https://travis-ci.org/figure-io/polymer-graph-force-directed
 
-[coveralls-image]: https://img.shields.io/coveralls/figure-io/polymer-force-layout/master.svg
-[coveralls-url]: https://coveralls.io/r/figure-io/polymer-force-layout?branch=master
+[coveralls-image]: https://img.shields.io/coveralls/figure-io/polymer-graph-force-directed/master.svg
+[coveralls-url]: https://coveralls.io/r/figure-io/polymer-graph-force-directed?branch=master
 
-[dependencies-image]: http://img.shields.io/david/figure-io/polymer-force-layout.svg
-[dependencies-url]: https://david-dm.org/figure-io/polymer-force-layout
+[dependencies-image]: http://img.shields.io/david/figure-io/polymer-graph-force-directed.svg
+[dependencies-url]: https://david-dm.org/figure-io/polymer-graph-force-directed
 
-[dev-dependencies-image]: http://img.shields.io/david/dev/figure-io/polymer-force-layout.svg
-[dev-dependencies-url]: https://david-dm.org/dev/figure-io/polymer-force-layout
+[dev-dependencies-image]: http://img.shields.io/david/dev/figure-io/polymer-graph-force-directed.svg
+[dev-dependencies-url]: https://david-dm.org/dev/figure-io/polymer-graph-force-directed
 
-[github-issues-image]: http://img.shields.io/github/issues/figure-io/polymer-force-layout.svg
-[github-issues-url]: https://github.com/figure-io/polymer-force-layout/issues
+[github-issues-image]: http://img.shields.io/github/issues/figure-io/polymer-graph-force-directed.svg
+[github-issues-url]: https://github.com/figure-io/polymer-graph-force-directed/issues
 

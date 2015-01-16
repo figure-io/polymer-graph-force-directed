@@ -1,5 +1,5 @@
 {
-  "name": "polymer-force-layout",
+  "name": "polymer-graph-force-directed",
   "version": "0.0.0",
   "description": "A Polymer web component for displaying force-directed graphs.",
   "authors": [
@@ -8,10 +8,10 @@
       "email": "kgryte@gmail.com"
     }
   ],
-  "main": "./polymer-force-layout.html",
+  "main": "./polymer-graph-force-directed.html",
   "repository": {
     "type": "git",
-    "url": "git://github.com/figure-io/polymer-force-layout"
+    "url": "git://github.com/figure-io/polymer-graph-force-directed"
   },
   "keywords": [
     "polymer",

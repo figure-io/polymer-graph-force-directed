@@ -3,7 +3,7 @@
 # VARIABLES #
 
 # Component Name:
-NAME ?= polymer-force-layout
+NAME ?= polymer-graph-force-directed
 
 # Distributable filename:
 OUT ?= $(NAME).html

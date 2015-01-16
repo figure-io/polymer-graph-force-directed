@@ -1,15 +1,15 @@
 <!--
-	POLYMER-FORCE-LAYOUT
+	POLYMER-GRAPH-FORCE-DIRECTED
 
 	DESCRIPTION:
-		- `polymer-force-layout` is a UI element for displaying force-directed graphs.
+		- `polymer-graph-force-directed` is a UI element for displaying force-directed graphs.
 
 	EXAMPLE:
-		<polymer-force-layout id="chart"></polymer-force-layout>
+		<polymer-graph-force-directed id="chart"></polymer-graph-force-directed>
 		...
 		var chart = this.$.chart;
 
-	@element polymer-force-layout
+	@element polymer-graph-force-directed
 	@status unstable
 --><!-- POLYMER --><html><head><link rel="import" href="../polymer/polymer.html">
 
@@ -18,7 +18,7 @@
 <link rel="import" href="../polymer-d3/polymer-d3.html">
 
 <!-- ELEMENT -->
-</head><body><polymer-element name="polymer-force-layout" attributes="data config width height chartTitle paddingLeft paddingRight paddingBottom paddingTop autoResize" assetpath="build/">
+</head><body><polymer-element name="polymer-graph-force-directed" attributes="data config width height chartTitle paddingLeft paddingRight paddingBottom paddingTop autoResize" assetpath="build/">
 
 	<template>
 
@@ -459,14 +459,14 @@ Chart.prototype.createBase = function() {
 	this.$.graph = canvas.append( 'svg:g' )
 		.attr( 'property', 'graph' )
 		.attr( 'class', 'graph' )
-		.attr( 'data-graph-type', 'force-layout' )
+		.attr( 'data-graph-type', 'graph-force-directed' )
 		.attr( 'transform', 'translate(' + pLeft + ',' + pTop + ')' );
 
 	// Create the meta element:
 	this.$.meta = canvas.append( 'svg:g' )
 		.attr( 'property', 'meta' )
 		.attr( 'class', 'meta' )
-		.attr( 'data-graph-type', 'force-layout' )
+		.attr( 'data-graph-type', 'graph-force-directed' )
 		.attr( 'transform', 'translate(0,0)' );
 
 	return this;
@@ -965,7 +965,7 @@ Chart.prototype.autoResizeChanged = function( oldVal, newVal ) {
 */
 Chart.prototype.onResize = function() {
 	this.fire( 'resized', {
-		'el': 'polymer-force-layout',
+		'el': 'polymer-graph-force-directed',
 		'msg': 'Received a resize event.'
 	});
 	if ( !this.$.canvas ) {
@@ -1017,11 +1017,11 @@ module.exports = Chart;
 },{"./stream":3,"./utils/delayed.js":5}],2:[function(require,module,exports){
 /**
 *
-*	COMPONENT: polymer-force-layout
+*	COMPONENT: polymer-graph-force-directed
 *
 *
 *	DESCRIPTION:
-*		- Registers the polymer-force-layout web-component.
+*		- Registers the polymer-graph-force-directed web-component.
 *
 *
 *	NOTES:
@@ -1053,7 +1053,7 @@ var Chart = require( './chart.js' );
 
 // POLYMER //
 
-Polymer( 'polymer-force-layout', Chart.prototype );
+Polymer( 'polymer-graph-force-directed', Chart.prototype );
 
 },{"./chart.js":1}],3:[function(require,module,exports){
 (function (Buffer){
