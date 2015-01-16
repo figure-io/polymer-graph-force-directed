@@ -7,6 +7,7 @@ TODO
 	- readable state should be object mode
 4. change all force layout to graph-force-directed
 	-	repo name
+5. data should be split into vertices and edges
 
 
 ## Tests
