@@ -26,7 +26,9 @@ TODO
 	- 	number or accessor
 16. chargeDistance
 17. draggable nodes (`drag()`)
-18. 
+18. hover event
+19. drag event
+20. click event
 
 
 ## Tests
