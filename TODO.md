@@ -1,34 +1,44 @@
 TODO
 ====
 
-1. 
+1. remove the reset function
 2. Update favicon
 3. Update stream implementation
 	- readable state should be object mode
-4. vertex color
+4. vertex color (`vColor`)
 	- 	color accessor
-5. vertex label
+5. vertex label (`vLabel`)
 	-	label accessor
-6. edge color
+6. edge color (`eColor`)
 	- 	color accessor
-7. edge label
+7. edge label (`eLabel`)
 	-	label accessor
 8. static mode
-9. linkDistance
-	- 	number or accessor
-10. linkStrength
-	- 	number or accessor
-11. distance
-12. gravity
-13. theta
-14. alpha
-15. charge
-	- 	number or accessor
-16. chargeDistance
+9. 
+10. edges group (marks)
+11. vertices group (marks)
+12. radius
+	-	number or accessor
+13. 
+14. self-connections (?)
+15. directed connections (?)
+	- 	arrows
+16. duplicate connections (?)
+	-	1->2
+	-	2->1
+	-	arrows going opposite ways
 17. draggable nodes (`drag()`)
 18. hover event
 19. drag event
 20. click event
+21. start
+22. stop
+23. tick
+24. resume (?) --> or could this just be subsumed by start?
+25. update
+	-	wrapper for start, stop, tick, resetMarks (?)
+26. favicon
+27. 
 
 
 ## Tests
@@ -36,4 +46,6 @@ TODO
 1. `clear()`
 2. `vertices()`
 3. `edges()`
+
+
 

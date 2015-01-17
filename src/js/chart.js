@@ -162,6 +162,69 @@ Chart.prototype.height = null;
 Chart.prototype.chartTitle = '';
 
 /**
+* ATTRIBUTE: edgeLength
+*	Specifies edge length. See [D3 documentation]{@link https://github.com/mbostock/d3/wiki/Force-Layout#linkDistance}.
+*
+* @type {Number|Function}
+* @default 20
+*/
+Chart.prototype.edgeLength = 20;
+
+/**
+* ATTRIBUTE: edgeStrength
+*	Specifies edge rigidity. See [D3 documentation]{@link https://github.com/mbostock/d3/wiki/Force-Layout#linkStrength}.
+*
+* @type {Number|Function}
+* @default 1
+*/
+Chart.prototype.edgeStrength = 1;
+
+/**
+* ATTRIBUTE: friction
+*	Specifies the velocity decay for each simulation tick. See [D3 documentation]{@link https://github.com/mbostock/d3/wiki/Force-Layout#fiction}.
+*
+* @type {Number}
+* @default 0.9
+*/
+Chart.prototype.friction = 0.9;
+
+/**
+* ATTRIBUTE: charge
+*	Specifies vertex charge. See [D3 documentation]{@link https://github.com/mbostock/d3/wiki/Force-Layout#charge}.
+*
+* @type {Number|Function}
+* @default -30
+*/
+Chart.prototype.charge = -30;
+
+/**
+* ATTRIBUTE: chargeDistance
+*	Specifies the maximum distance over which charge is applied. A finite charge distance helps force layout performance. See [D3 documentation]{@link https://github.com/mbostock/d3/wiki/Force-Layout#chargeDistance}.
+*
+* @type {Number}
+* @default +infinity
+*/
+Chart.prototype.chargeDistance = Number.POSITIVE_INFINITY;
+
+/**
+* ATTRIBUTE: theta
+*	Specifies a factor used to consider a group of charges (vertices) a single charge when simulating long-range charge interaction. See [D3 documentation]{@link https://github.com/mbostock/d3/wiki/Force-Layout#theta}.
+*
+* @type {Number}
+* @default 0.8
+*/
+Chart.prototype.theta = 0.8;
+
+/**
+* ATTRIBUTE: gravity
+*	Specifies a geometric constraint to prevent vertices from escaping the graph bounds. To disable, set to `0`. See [D3 documentation]{@link https://github.com/mbostock/d3/wiki/Force-Layout#gravity}.
+*
+* @type {Number}
+* @default 0.1
+*/
+Chart.prototype.gravity = 0.1;
+
+/**
 * ATTRIBUTE: autoUpdate
 *	Boolean flag indicating whether a chart should auto update DOM elements whenever an attribute changes.
 *
@@ -226,7 +289,20 @@ Chart.prototype.init = function() {
 	// Private methods...
 
 	// Force...
-	this._force = d3.layout.force();
+	this._force = d3.layout.force()
+		.size([
+			this.graphWidth(),
+			this.graphHeight()
+		])
+		.nodes( this.vertices )
+		.links( this.edges )
+		.linkStrength( this.edgeStrength )
+		.linkDistance( this.edgeLength )
+		.charge( this.charge )
+		.chargeDistance( this.chargeDistance )
+		.friction( this.friction )
+		.gravity( this.gravity )
+		.theta( this.theta );
 
 	// Stream...
 	this._stream = null;
@@ -405,13 +481,7 @@ Chart.prototype.createBackground = function() {
 * @returns {DOMElement} element instance
 */
 Chart.prototype.createLayout = function() {
-	this._force
-		.nodes( this.vertices )
-		.links( this.edges )
-		.size( [this.width, this.height] )
-		.start()
-		.stop();
-
+	this._force.start().stop();
 	return this;
 }; // end METHOD createLayout()
 
@@ -1045,6 +1115,177 @@ Chart.prototype.paddingTopChanged = function( oldVal, newVal ) {
 		'curr': newVal
 	});
 }; // end METHOD paddingTopChanged()
+
+/**
+* METHOD: edgeLengthChanged( oldVal, newVal )
+*	Event handler invoked when the `edgeLength` attribute changes.
+*
+* @param {Number|Function} oldVal - old value
+* @param {Number|Function} newVal - new value
+*/
+Chart.prototype.edgeLengthChanged = function( oldVal, newVal ) {
+	var type = typeof newVal,
+		err;
+	if ( type !== 'function' && (type !== 'number' || newVal !== newVal || newVal <= 0) ) {
+		err = new TypeError( 'edgeLength::invalid assignment. Must be a number greater than 0 or an accessor function. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.edgeLength = oldVal;
+		return;
+	}
+	this._force.linkDistance( newVal );
+
+	this.fire( 'changed', {
+		'attr': 'edgeLength',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD edgeLengthChanged()
+
+/**
+* METHOD: edgeStrengthChanged( oldVal, newVal )
+*	Event handler invoked when the `edgeStrength` attribute changes.
+*
+* @param {Number|Function} oldVal - old value
+* @param {Number|Function} newVal - new value
+*/
+Chart.prototype.edgeStrengthChanged = function( oldVal, newVal ) {
+	var type = typeof newVal,
+		err;
+	if ( type !== 'function' && (type !== 'number' || newVal !== newVal || newVal < 0 || newVal > 1) ) {
+		err = new TypeError( 'edgeStrength::invalid assignment. Must be a number between 0 and 1 or an accessor function. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.edgeStrength = oldVal;
+		return;
+	}
+	this._force.linkStrength( newVal );
+
+	this.fire( 'changed', {
+		'attr': 'edgeStrength',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD edgeStrengthChanged()
+
+/**
+* METHOD: frictionChanged( oldVal, newVal )
+*	Event handler invoked when the `friction` attribute changes.
+*
+* @param {Number} oldVal - old value
+* @param {Number} newVal - new value
+*/
+Chart.prototype.frictionChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'number' || newVal !== newVal || newVal < 0 || newVal > 1 ) {
+		err = new TypeError( 'friction::invalid assignment. Must be a number between 0 and 1. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.friction = oldVal;
+		return;
+	}
+	this._force.friction( newVal );
+
+	this.fire( 'changed', {
+		'attr': 'friction',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD frictionChanged()
+
+/**
+* METHOD: chargeChanged( oldVal, newVal )
+*	Event handler invoked when the `charge` attribute changes.
+*
+* @param {Number|Function} oldVal - old value
+* @param {Number|Function} newVal - new value
+*/
+Chart.prototype.chargeChanged = function( oldVal, newVal ) {
+	var type = typeof newVal,
+		err;
+	if ( type !== 'function' && (type !== 'number' || newVal !== newVal) ) {
+		err = new TypeError( 'charge::invalid assignment. Must be a number or an accessor function. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.charge = oldVal;
+		return;
+	}
+	this._force.charge( newVal );
+
+	this.fire( 'changed', {
+		'attr': 'charge',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD chargeChanged()
+
+/**
+* METHOD: chargeDistanceChanged( oldVal, newVal )
+*	Event handler invoked when the `chargeDistance` attribute changes.
+*
+* @param {Number} oldVal - old value
+* @param {Number} newVal - new value
+*/
+Chart.prototype.chargeDistanceChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'number' || newVal !== newVal ) {
+		err = new TypeError( 'chargeDistance::invalid assignment. Must be a number. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.chargeDistance = oldVal;
+		return;
+	}
+	this._force.chargeDistance( newVal );
+
+	this.fire( 'changed', {
+		'attr': 'chargeDistance',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD chargeDistanceChanged()
+
+/**
+* METHOD: thetaChanged( oldVal, newVal )
+*	Event handler invoked when the `theta` attribute changes.
+*
+* @param {Number} oldVal - old value
+* @param {Number} newVal - new value
+*/
+Chart.prototype.thetaChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'number' || newVal !== newVal ) {
+		err = new TypeError( 'theta::invalid assignment. Must be a number. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.theta = oldVal;
+		return;
+	}
+	this._force.theta( newVal );
+
+	this.fire( 'changed', {
+		'attr': 'theta',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD thetaChanged()
+
+/**
+* METHOD: gravityChanged( oldVal, newVal )
+*	Event handler invoked when the `gravity` attribute changes.
+*
+* @param {Number} oldVal - old value
+* @param {Number} newVal - new value
+*/
+Chart.prototype.gravityChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'number' || newVal !== newVal ) {
+		err = new TypeError( 'gravity::invalid assignment. Must be a number. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.gravity = oldVal;
+		return;
+	}
+	this._force.gravity( newVal );
+
+	this.fire( 'changed', {
+		'attr': 'gravity',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD gravityChanged()
 
 /**
 * METHOD: autoUpdateChanged( oldVal, newVal )
