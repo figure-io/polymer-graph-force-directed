@@ -216,7 +216,7 @@ el.eLabel = function eLabel( d, i ) {
 
 #### el.eLength
 
-Specifies the [edge length](https://github.com/mbostock/d3/wiki/Force-Layout#linkDistance). The value may be either a `numeric` constant or an accessor `function`. Default is `20`px.
+Specifies the [edge length](https://github.com/mbostock/d3/wiki/Force-Layout#linkDistance). The value may be a `numeric` constant or an accessor `function`. Default is `20`px.
 
 ``` javascript
 el.eLength = function edgeLength( d, i ) {
@@ -227,7 +227,7 @@ el.eLength = function edgeLength( d, i ) {
 
 #### el.eStrength
 
-Specifies the [edge strength](https://github.com/mbostock/d3/wiki/Force-Layout#linkStrength). The value may be either a `numeric` constant between `0` and `1` or an accessor `function`. Default is `1`.
+Specifies the [edge strength](https://github.com/mbostock/d3/wiki/Force-Layout#linkStrength). The value may be a `numeric` constant between `0` and `1` or an accessor `function`. Default is `1`.
 
 ``` javascript
 el.eStrength = function edgeStrength( d, i ) {
@@ -247,7 +247,7 @@ el.friction = 0.5;
 
 #### el.charge
 
-Specifies the vertex [charge](https://github.com/mbostock/d3/wiki/Force-Layout#charge). The value may be either a `numeric` constant or an accessor `function`. Default is `-30`.
+Specifies the vertex [charge](https://github.com/mbostock/d3/wiki/Force-Layout#charge). The value may be a `numeric` constant or an accessor `function`. Default is `-30`.
 
 ``` javascript
 el.charge = function charge( d, i ) {
