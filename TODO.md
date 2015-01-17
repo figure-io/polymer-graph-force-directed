@@ -12,10 +12,11 @@ TODO
 7. 
 8. static mode
 9. 
-10. edges group (marks) --> eGroup
-11. vertices group (marks) --> vGroup
-12. 
-13. 
+10. should we throttle how often the simulation can be run?
+	-	use `delayed()` util
+11. 
+12. [distortion](http://bost.ocks.org/mike/fisheye/)
+13. [curved](http://bl.ocks.org/mbostock/4600693) links
 14. self-connections (?)
 15. directed connections (?)
 	- 	arrows
@@ -33,8 +34,9 @@ TODO
 24. resume (?) --> or could this just be subsumed by start?
 25. update
 	-	wrapper for start, stop, tick, resetMarks (?)
-26. favicon
-27. 
+26. 
+27. multiple definitions for graph in chart-metadata-terms
+	-	update to include graph (node-link) defns.
 
 
 ## Tests

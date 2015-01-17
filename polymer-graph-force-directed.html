@@ -798,7 +798,7 @@ Chart.prototype.clear = function() {
 // FIXME: remove once have more general solution
 Chart.prototype.reset = function() {
 	var force = this._force;
-
+console.log( force.charge() );
 	force
 		.nodes( this.vertices )
 		.links( this.edges )
@@ -1524,7 +1524,9 @@ Chart.prototype.chargeChanged = function( oldVal, newVal ) {
 		return;
 	}
 	this._force.charge( newVal );
-
+	if ( this.autoUpdate ) {
+		this.reset();
+	}
 	this.fire( 'changed', {
 		'attr': 'charge',
 		'prev': oldVal,

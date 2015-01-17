@@ -1381,6 +1381,9 @@ Chart.prototype.chargeChanged = function( oldVal, newVal ) {
 	}
 	this._force.charge( newVal );
 
+	if ( this.autoUpdate ) {
+		this.reset();
+	}
 	this.fire( 'changed', {
 		'attr': 'charge',
 		'prev': oldVal,

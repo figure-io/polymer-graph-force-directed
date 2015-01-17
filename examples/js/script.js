@@ -42,6 +42,8 @@
 		var figs,
 			len,
 			charts,
+			data,
+			d,
 			el,
 			i;
 
@@ -55,20 +57,35 @@
 		}
 
 		// [1] Parse the data:
-		body = JSON.parse( body );
+		data = JSON.parse( body );
 
-		// [2] Configure the figure...
+		// [2] Configure each figure...
+
+		// [2.1] Figure 1:
 		el = charts[ 0 ];
+		d = data[ 0 ];
 
-		el.vertices = body.vertices;
-		el.edges = body.edges;
+		el.vertices = d.vertices;
+		el.edges = d.edges;
 
-		// FIXME
+		// FIXME: reset will be replaced
 		el.reset();
 
 		el.radius = function radius() {
 			return Math.round( Math.random()*10 );
 		};
+
+		// [2.2] Figure 2:
+		el = charts[ 1 ];
+		d = data[ 1 ];
+
+		el.vertices = d.vertices;
+		el.edges = [];
+
+		el.charge = -300;
+
+		// el.reset();
+
 	} // end FUNCTION onData()
 
 

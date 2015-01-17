@@ -1,6 +1,6 @@
 Force-Directed Graph
 ===
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependencies][dependencies-image]][dependencies-url]
+[![NPM version][npm-image]][npm-url] [![Bower version][bower-image]][bower-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependencies][dependencies-image]][dependencies-url]
 
 > A [Polymer](https://www.polymer-project.org/) web component for displaying force-directed graphs.
 
@@ -499,6 +499,9 @@ Copyright &copy; 2015. Athan Reines.
 
 [npm-image]: http://img.shields.io/npm/v/.svg
 [npm-url]: https://npmjs.org/package/
+
+[bower-image]: https://img.shields.io/bower/v/.svg
+[bower-url]: https://github.com/figure-io/polymer-graph-force-directed
 
 [travis-image]: http://img.shields.io/travis/figure-io/polymer-graph-force-directed/master.svg
 [travis-url]: https://travis-ci.org/figure-io/polymer-graph-force-directed
