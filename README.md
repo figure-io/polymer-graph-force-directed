@@ -500,7 +500,7 @@ Copyright &copy; 2015. Athan Reines.
 [npm-image]: http://img.shields.io/npm/v/.svg
 [npm-url]: https://npmjs.org/package/
 
-[bower-image]: https://img.shields.io/bower/v/.svg
+[bower-image]: https://img.shields.io/bower/v/polymer-graph-force-directed.svg
 [bower-url]: https://github.com/figure-io/polymer-graph-force-directed
 
 [travis-image]: http://img.shields.io/travis/figure-io/polymer-graph-force-directed/master.svg
