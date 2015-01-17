@@ -162,22 +162,71 @@ Chart.prototype.height = null;
 Chart.prototype.chartTitle = '';
 
 /**
-* ATTRIBUTE: edgeLength
+* ATTRIBUTE: radius
+*	Specifies the vertex circle radius.
+*
+* @type {Number|Function}
+* @default 10
+*/
+Chart.prototype.radius = 10;
+
+/**
+* ATTRIBUTE: vColor
+*	Defines the vertex color class accessor.
+*
+* @type {Null|Function}
+* @default null
+*/
+Chart.prototype.vColor = null;
+
+/**
+* METHOD: vLabel( d )
+*	Returns the vertex label.
+*
+* @param {Object} d - datum
+* @return {String} vertex label
+*/
+Chart.prototype.vLabel = function vLabel( d ) {
+	return d.label;
+}; // end METHOD vLabel()
+
+/**
+* ATTRIBUTE: eColor
+*	Defines the edge color class accessor.
+*
+* @type {Null|Function}
+* @default null
+*/
+Chart.prototype.eColor = null;
+
+/**
+* METHOD: eLabel( d )
+*	Returns the edge label.
+*
+* @param {Object} d - datum
+* @return {String} edge label
+*/
+Chart.prototype.eLabel = function vLabel( d ) {
+	return d.label;
+}; // end METHOD eLabel()
+
+/**
+* ATTRIBUTE: eLength
 *	Specifies edge length. See [D3 documentation]{@link https://github.com/mbostock/d3/wiki/Force-Layout#linkDistance}.
 *
 * @type {Number|Function}
 * @default 20
 */
-Chart.prototype.edgeLength = 20;
+Chart.prototype.eLength = 20;
 
 /**
-* ATTRIBUTE: edgeStrength
+* ATTRIBUTE: eStrength
 *	Specifies edge rigidity. See [D3 documentation]{@link https://github.com/mbostock/d3/wiki/Force-Layout#linkStrength}.
 *
 * @type {Number|Function}
 * @default 1
 */
-Chart.prototype.edgeStrength = 1;
+Chart.prototype.eStrength = 1;
 
 /**
 * ATTRIBUTE: friction
@@ -1117,54 +1166,54 @@ Chart.prototype.paddingTopChanged = function( oldVal, newVal ) {
 }; // end METHOD paddingTopChanged()
 
 /**
-* METHOD: edgeLengthChanged( oldVal, newVal )
-*	Event handler invoked when the `edgeLength` attribute changes.
+* METHOD: eLengthChanged( oldVal, newVal )
+*	Event handler invoked when the `eLength` attribute changes.
 *
 * @param {Number|Function} oldVal - old value
 * @param {Number|Function} newVal - new value
 */
-Chart.prototype.edgeLengthChanged = function( oldVal, newVal ) {
+Chart.prototype.eLengthChanged = function( oldVal, newVal ) {
 	var type = typeof newVal,
 		err;
 	if ( type !== 'function' && (type !== 'number' || newVal !== newVal || newVal <= 0) ) {
-		err = new TypeError( 'edgeLength::invalid assignment. Must be a number greater than 0 or an accessor function. Value: `' + newVal + '`.' );
+		err = new TypeError( 'eLength::invalid assignment. Must be a number greater than 0 or an accessor function. Value: `' + newVal + '`.' );
 		this.fire( 'err', err );
-		this.edgeLength = oldVal;
+		this.eLength = oldVal;
 		return;
 	}
 	this._force.linkDistance( newVal );
 
 	this.fire( 'changed', {
-		'attr': 'edgeLength',
+		'attr': 'eLength',
 		'prev': oldVal,
 		'curr': newVal
 	});
-}; // end METHOD edgeLengthChanged()
+}; // end METHOD eLengthChanged()
 
 /**
-* METHOD: edgeStrengthChanged( oldVal, newVal )
-*	Event handler invoked when the `edgeStrength` attribute changes.
+* METHOD: eStrengthChanged( oldVal, newVal )
+*	Event handler invoked when the `eStrength` attribute changes.
 *
 * @param {Number|Function} oldVal - old value
 * @param {Number|Function} newVal - new value
 */
-Chart.prototype.edgeStrengthChanged = function( oldVal, newVal ) {
+Chart.prototype.eStrengthChanged = function( oldVal, newVal ) {
 	var type = typeof newVal,
 		err;
 	if ( type !== 'function' && (type !== 'number' || newVal !== newVal || newVal < 0 || newVal > 1) ) {
-		err = new TypeError( 'edgeStrength::invalid assignment. Must be a number between 0 and 1 or an accessor function. Value: `' + newVal + '`.' );
+		err = new TypeError( 'eStrength::invalid assignment. Must be a number between 0 and 1 or an accessor function. Value: `' + newVal + '`.' );
 		this.fire( 'err', err );
-		this.edgeStrength = oldVal;
+		this.eStrength = oldVal;
 		return;
 	}
 	this._force.linkStrength( newVal );
 
 	this.fire( 'changed', {
-		'attr': 'edgeStrength',
+		'attr': 'eStrength',
 		'prev': oldVal,
 		'curr': newVal
 	});
-}; // end METHOD edgeStrengthChanged()
+}; // end METHOD eStrengthChanged()
 
 /**
 * METHOD: frictionChanged( oldVal, newVal )

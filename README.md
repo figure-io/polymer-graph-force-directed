@@ -143,6 +143,144 @@ el.chartTitle = 'Awesome chart.';
 ```
 
 
+#### el.radius
+
+Specifies the vertex circle radius. The value may be a `numeric` constant or an accessor `function`. Default is `10`px.
+
+``` javascript
+// Numeric constant:
+el.radius = 20; // px
+
+// Accessor:
+el.radius = function radius( d, i ) {
+	return d.radius;
+};
+```
+
+
+#### el.vColor
+
+Defines the vertex color class accessor. Default is `null`.
+
+``` javascript
+el.vColor = function vColor( d, i ) {
+	return 'vertex-pink';
+};
+```
+
+
+#### el.vLabel
+
+Defines the vertex label accessor. The default accessor assumes an `array` of `objects`, each a `label` property.
+
+``` javascript
+// Default:
+el.vLabel = function vLabel( d, i ) {
+	return d.label;
+};
+
+// Custom:
+el.vLabel = function vLabel( d, i ) {
+	return d[ 3 ];
+};
+```
+
+
+#### el.eColor
+
+Defines the edge color class accessor. Default is `null`.
+
+``` javascript
+el.eColor = function eColor( d, i ) {
+	return 'edge-red';
+};
+```
+
+
+#### el.eLabel
+
+Defines the edge label accessor. The default accessor assumes an `array` of `objects`, each a `label` property.
+
+``` javascript
+// Default:
+el.eLabel = function eLabel( d, i ) {
+	return d.label;
+};
+
+// Custom:
+el.eLabel = function eLabel( d, i ) {
+	return d[ 0 ];
+};
+```
+
+
+#### el.eLength
+
+Specifies the [edge length](https://github.com/mbostock/d3/wiki/Force-Layout#linkDistance). The value may be either a `numeric` constant or an accessor `function`. Default is `20`px.
+
+``` javascript
+el.eLength = function edgeLength( d, i ) {
+	return d.weight;
+};
+```
+
+
+#### el.eStrength
+
+Specifies the [edge strength](https://github.com/mbostock/d3/wiki/Force-Layout#linkStrength). The value may be either a `numeric` constant between `0` and `1` or an accessor `function`. Default is `1`.
+
+``` javascript
+el.eStrength = function edgeStrength( d, i ) {
+	return d.strength;
+};
+```
+
+
+#### el.friction
+
+Specifies the [velocity decay](https://github.com/mbostock/d3/wiki/Force-Layout#fiction) for each simulation tick. Default is `0.9`.
+
+``` javascript
+el.friction = 0.5;
+```
+
+
+#### el.charge
+
+Specifies the vertex [charge](https://github.com/mbostock/d3/wiki/Force-Layout#charge). The value may be either a `numeric` constant or an accessor `function`. Default is `-30`.
+
+``` javascript
+el.charge = function charge( d, i ) {
+	return d.charge;
+};
+```
+
+#### el.chargeDistance
+
+Specifies the [maximum distance](https://github.com/mbostock/d3/wiki/Force-Layout#chargeDistance) over which charge is applied. A finite distance helps force layout performance. Default is `+infinity`.
+
+``` javascript
+el.chargeDistance = 200; // px
+```
+
+
+#### el.theta
+
+Specifies a [factor](https://github.com/mbostock/d3/wiki/Force-Layout#theta) used to consider a group of charges (vertices) a single charge when simulating long-range charge interaction. Default is `0.8`.
+
+``` javascript
+el.theta = 1.5;
+```
+
+#### el.gravity
+
+Specifies a [geometric constraint](https://github.com/mbostock/d3/wiki/Force-Layout#gravity) to prevent vertices from escaping the graph bounds. To disable, set to `0`. Default is `0.1`.
+
+``` javascript
+el.gravity = 0.8;
+```
+
+
 #### el.autoUpdate
 
 Specifies whether the element should auto update whenever an attribute changes. Default is `true`.

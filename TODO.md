@@ -6,19 +6,18 @@ TODO
 3. Update stream implementation
 	- readable state should be object mode
 4. vertex color (`vColor`)
-	- 	color accessor
+	- 	color (class) accessor
 5. vertex label (`vLabel`)
 	-	label accessor
 6. edge color (`eColor`)
-	- 	color accessor
+	- 	color (class) accessor
 7. edge label (`eLabel`)
 	-	label accessor
 8. static mode
 9. 
 10. edges group (marks)
 11. vertices group (marks)
-12. radius
-	-	number or accessor
+12. radiusChanged callback
 13. 
 14. self-connections (?)
 15. directed connections (?)
