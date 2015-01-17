@@ -145,7 +145,7 @@ el.chartTitle = 'Awesome chart.';
 
 #### el.radius
 
-Specifies the vertex circle radius. The value may be a `numeric` constant or an accessor `function`. Default is `10`px.
+Specifies the vertex circle radius. The value may be a `numeric` constant or an accessor `function`. Default is 10 pixels.
 
 ``` javascript
 // Numeric constant:
@@ -216,7 +216,7 @@ el.eLabel = function eLabel( d, i ) {
 
 #### el.eLength
 
-Specifies the [edge length](https://github.com/mbostock/d3/wiki/Force-Layout#linkDistance). The value may be a `numeric` constant or an accessor `function`. Default is `20`px.
+Specifies the [edge length](https://github.com/mbostock/d3/wiki/Force-Layout#linkDistance). The value may be a `numeric` constant or an accessor `function`. Default is 20 pixels.
 
 ``` javascript
 el.eLength = function edgeLength( d, i ) {
