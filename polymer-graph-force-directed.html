@@ -18,7 +18,7 @@
 <link rel="import" href="../polymer-d3/polymer-d3.html">
 
 <!-- ELEMENT -->
-</head><body><polymer-element name="polymer-graph-force-directed" attributes="vertices edges config width height chartTitle paddingLeft paddingRight paddingBottom paddingTop edgeDistance edgeStrength friction charge chargeDistance theta gravity autoResize autoUpdate" assetpath="build/">
+</head><body><polymer-element name="polymer-graph-force-directed" attributes="vertices edges config width height chartTitle paddingLeft paddingRight paddingBottom paddingTop radius vColor vLabel eColor eLabel edgeDistance edgeStrength friction charge chargeDistance theta gravity autoResize autoUpdate" assetpath="build/">
 
 	<template>
 
@@ -71,6 +71,518 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }</style>
+		<style>/* COLORS */
+
+/* D3: Category10 */
+.category10-1,
+[color="category10-1"] {
+	stroke: #1f77b4;
+}
+.category10-2,
+[color="category10-2"] {
+	stroke: #ff7f0e;
+}
+.category10-3,
+[color="category10-3"] {
+	stroke: #2ca02c;
+}
+.category10-4,
+[color="category10-4"] {
+	stroke: #d62728;
+}
+.category10-5,
+[color="category10-5"] {
+	stroke: #9467bd;
+}
+.category10-6,
+[color="category10-6"] {
+	stroke: #8c564b;
+}
+.category10-7,
+[color="category10-7"] {
+	stroke: #e377c2;
+}
+.category10-8,
+[color="category10-8"] {
+	stroke: #7f7f7f;
+}
+.category10-9,
+[color="category10-9"] {
+	stroke: #bcdb22;
+}
+.category10-10,
+[color="category10-10"] {
+	stroke: #17becf;
+}
+
+/* D3: category20 */
+.category20-1,
+[color="category20-1"] {
+	stroke: #1f77b4;
+}
+.category20-2,
+[color="category20-2"] {
+	stroke: #aec7e8;
+}
+.category20-3,
+[color="category20-3"] {
+	stroke: #ff7f0e;
+}
+.category20-4,
+[color="category20-4"] {
+	stroke: #ffbb78;
+}
+.category20-5,
+[color="category20-5"] {
+	stroke: #2ca02c;
+}
+.category20-6,
+[color="category20-6"] {
+	stroke: #98df8a;
+}
+.category20-7,
+[color="category20-7"] {
+	stroke: #d62728;
+}
+.category20-8,
+[color="category20-8"] {
+	stroke: #ff9896;
+}
+.category20-9,
+[color="category20-9"] {
+	stroke: #9467bd;
+}
+.category20-10,
+[color="category20-10"] {
+	stroke: #c5b0d5;
+}
+.category20-11,
+[color="category20-11"] {
+	stroke: #8c564b;
+}
+.category20-12,
+[color="category20-12"] {
+	stroke: #c49c94;
+}
+.category20-13,
+[color="category20-13"] {
+	stroke: #e377c2;
+}
+.category20-14,
+[color="category20-14"] {
+	stroke: #f7b6d2;
+}
+.category20-15,
+[color="category20-15"] {
+	stroke: #7f7f7f;
+}
+.category20-16,
+[color="category20-16"] {
+	stroke: #c7c7c7;
+}
+.category20-17,
+[color="category20-17"] {
+	stroke: #bcbd22;
+}
+.category20-18,
+[color="category20-18"] {
+	stroke: #dbdb8d;
+}
+.category20-19,
+[color="category20-19"] {
+	stroke: #17becf;
+}
+.category20-20,
+[color="category20-20"] {
+	stroke: #9edae5;
+}
+
+/* D3: category20b */
+.category20b-1,
+[color="category20b-1"] {
+	stroke: #393b79;
+}
+.category20b-2,
+[color="category20b-2"] {
+	stroke: #5254a3;
+}
+.category20b-3,
+[color="category20b-3"] {
+	stroke: #6b6ecf;
+}
+.category20b-4,
+[color="category20b-4"] {
+	stroke: #9c9ede;
+}
+.category20b-5,
+[color="category20b-5"] {
+	stroke: #637939;
+}
+.category20b-6,
+[color="category20b-6"] {
+	stroke: #8ca252;
+}
+.category20b-7,
+[color="category20b-7"] {
+	stroke: #b5cf6b;
+}
+.category20b-8,
+[color="category20b-8"] {
+	stroke: #cedb9c;
+}
+.category20b-9,
+[color="category20b-9"] {
+	stroke: #8c6d31;
+}
+.category20b-10,
+[color="category20b-10"] {
+	stroke: #bd9e39;
+}
+.category20b-11,
+[color="category20b-11"] {
+	stroke: #e7ba52;
+}
+.category20b-12,
+[color="category20b-12"] {
+	stroke: #e7cb94;
+}
+.category20b-13,
+[color="category20b-13"] {
+	stroke: #843c39;
+}
+.category20b-14,
+[color="category20b-14"] {
+	stroke: #ad494a;
+}
+.category20b-15,
+[color="category20b-15"] {
+	stroke: #d6616b;
+}
+.category20b-16,
+[color="category20b-16"] {
+	stroke: #e7969c;
+}
+.category20b-17,
+[color="category20b-17"] {
+	stroke: #7b4173;
+}
+.category20b-18,
+[color="category20b-18"] {
+	stroke: #a55194;
+}
+.category20b-19,
+[color="category20b-19"] {
+	stroke: #ce6dbd;
+}
+.category20b-20,
+[color="category20b-20"] {
+	stroke: #de9ed6;
+}
+
+/* D3: category20c */
+.category20c-1,
+[color="category20c-1"] {
+	stroke: #3182bd;
+}
+.category20c-2,
+[color="category20c-2"] {
+	stroke: #6baed6;
+}
+.category20c-3,
+[color="category20c-3"] {
+	stroke: #9ecae1;
+}
+.category20c-4,
+[color="category20c-4"] {
+	stroke: #c6dbef;
+}
+.category20c-5,
+[color="category20c-5"] {
+	stroke: #e6550d;
+}
+.category20c-6,
+[color="category20c-6"] {
+	stroke: #fd8d3c;
+}
+.category20c-7,
+[color="category20c-7"] {
+	stroke: #fdae6b;
+}
+.category20c-8,
+[color="category20c-8"] {
+	stroke: #fdd0a2;
+}
+.category20c-9,
+[color="category20c-9"] {
+	stroke: #31a354;
+}
+.category20c-10,
+[color="category20c-10"] {
+	stroke: #74c476;
+}
+.category20c-11,
+[color="category20c-11"] {
+	stroke: #a1d99b;
+}
+.category20c-12,
+[color="category20c-12"] {
+	stroke: #c7e9c0;
+}
+.category20c-13,
+[color="category20c-13"] {
+	stroke: #756bb1;
+}
+.category20c-14,
+[color="category20c-14"] {
+	stroke: #9e9ac8;
+}
+.category20c-15,
+[color="category20c-15"] {
+	stroke: #bcbddc;
+}
+.category20c-16,
+[color="category20c-16"] {
+	stroke: #dadaeb;
+}
+.category20c-17,
+[color="category20c-17"] {
+	stroke: #636363;
+}
+.category20c-18,
+[color="category20c-18"] {
+	stroke: #969696;
+}
+.category20c-19,
+[color="category20c-19"] {
+	stroke: #bdbdbd;
+}
+.category20c-20,
+[color="category20c-20"] {
+	stroke: #d9d9d9;
+}
+
+
+
+
+
+/* D3: Category10 */
+.category10-1-span {
+	background-color: #1f77b4;
+}
+.category10-2-span {
+	background-color: #ff7f0e;
+}
+.category10-3-span {
+	background-color: #2ca02c;
+}
+.category10-4-span {
+	background-color: #d62728;
+}
+.category10-5-span {
+	background-color: #9467bd;
+}
+.category10-6-span {
+	background-color: #8c564b;
+}
+.category10-7-span {
+	background-color: #e377c2;
+}
+.category10-8-span {
+	background-color: #7f7f7f;
+}
+.category10-9-span {
+	background-color: #bcdb22;
+}
+.category10-10-span {
+	background-color: #17becf;
+}
+
+/* D3: category20 */
+.category20-1-span {
+	background-color: #1f77b4;
+}
+.category20-2-span {
+	background-color: #aec7e8;
+}
+.category20-3-span {
+	background-color: #ff7f0e;
+}
+.category20-4-span {
+	background-color: #ffbb78;
+}
+.category20-5-span {
+	background-color: #2ca02c;
+}
+.category20-6-span {
+	background-color: #98df8a;
+}
+.category20-7-span {
+	background-color: #d62728;
+}
+.category20-8-span {
+	background-color: #ff9896;
+}
+.category20-9-span {
+	background-color: #9467bd;
+}
+.category20-10-span {
+	background-color: #c5b0d5;
+}
+.category20-11-span {
+	background-color: #8c564b;
+}
+.category20-12-span {
+	background-color: #c49c94;
+}
+.category20-13-span {
+	background-color: #e377c2;
+}
+.category20-14-span {
+	background-color: #f7b6d2;
+}
+.category20-15-span {
+	background-color: #7f7f7f;
+}
+.category20-16-span {
+	background-color: #c7c7c7;
+}
+.category20-17-span {
+	background-color: #bcbd22;
+}
+.category20-18-span {
+	background-color: #dbdb8d;
+}
+.category20-19-span {
+	background-color: #17becf;
+}
+.category20-20-span {
+	background-color: #9edae5;
+}
+
+/* D3: category20b */
+.category20b-1-span {
+	background-color: #393b79;
+}
+.category20b-2-span {
+	background-color: #5254a3;
+}
+.category20b-3-span {
+	background-color: #6b6ecf;
+}
+.category20b-4-span {
+	background-color: #9c9ede;
+}
+.category20b-5-span {
+	background-color: #637939;
+}
+.category20b-6-span {
+	background-color: #8ca252;
+}
+.category20b-7-span {
+	background-color: #b5cf6b;
+}
+.category20b-8-span {
+	background-color: #cedb9c;
+}
+.category20b-9-span {
+	background-color: #8c6d31;
+}
+.category20b-10-span {
+	background-color: #bd9e39;
+}
+.category20b-11-span {
+	background-color: #e7ba52;
+}
+.category20b-12-span {
+	background-color: #e7cb94;
+}
+.category20b-13-span {
+	background-color: #843c39;
+}
+.category20b-14-span {
+	background-color: #ad494a;
+}
+.category20b-15-span {
+	background-color: #d6616b;
+}
+.category20b-16-span {
+	background-color: #e7969c;
+}
+.category20b-17-span {
+	background-color: #7b4173;
+}
+.category20b-18-span {
+	background-color: #a55194;
+}
+.category20b-19-span {
+	background-color: #ce6dbd;
+}
+.category20b-20-span {
+	background-color: #de9ed6;
+}
+
+/* D3: category20c */
+.category20c-1-span {
+	background-color: #3182bd;
+}
+.category20c-2-span {
+	background-color: #6baed6;
+}
+.category20c-3-span {
+	background-color: #9ecae1;
+}
+.category20c-4-span {
+	background-color: #c6dbef;
+}
+.category20c-5-span {
+	background-color: #e6550d;
+}
+.category20c-6-span {
+	background-color: #fd8d3c;
+}
+.category20c-7-span {
+	background-color: #fdae6b;
+}
+.category20c-8-span {
+	background-color: #fdd0a2;
+}
+.category20c-9-span {
+	background-color: #31a354;
+}
+.category20c-10-span {
+	background-color: #74c476;
+}
+.category20c-11-span {
+	background-color: #a1d99b;
+}
+.category20c-12-span {
+	background-color: #c7e9c0;
+}
+.category20c-13-span {
+	background-color: #756bb1;
+}
+.category20c-14-span {
+	background-color: #9e9ac8;
+}
+.category20c-15-span {
+	background-color: #bcbddc;
+}
+.category20c-16-span {
+	background-color: #dadaeb;
+}
+.category20c-17-span {
+	background-color: #636363;
+}
+.category20c-18-span {
+	background-color: #969696;
+}
+.category20c-19-span {
+	background-color: #bdbdbd;
+}
+.category20c-20-span {
+	background-color: #d9d9d9;
+}
+</style>
 		<style>:host {
 	display: block;
 	font-family: 'Open-Sans', sans-serif;
@@ -306,22 +818,71 @@ Chart.prototype.height = null;
 Chart.prototype.chartTitle = '';
 
 /**
-* ATTRIBUTE: edgeLength
+* ATTRIBUTE: radius
+*	Specifies the vertex circle radius.
+*
+* @type {Number|Function}
+* @default 10
+*/
+Chart.prototype.radius = 10;
+
+/**
+* ATTRIBUTE: vColor
+*	Defines the vertex color class accessor.
+*
+* @type {Null|Function}
+* @default null
+*/
+Chart.prototype.vColor = null;
+
+/**
+* METHOD: vLabel( d )
+*	Returns the vertex label.
+*
+* @param {Object} d - datum
+* @return {String} vertex label
+*/
+Chart.prototype.vLabel = function vLabel( d ) {
+	return d.label;
+}; // end METHOD vLabel()
+
+/**
+* ATTRIBUTE: eColor
+*	Defines the edge color class accessor.
+*
+* @type {Null|Function}
+* @default null
+*/
+Chart.prototype.eColor = null;
+
+/**
+* METHOD: eLabel( d )
+*	Returns the edge label.
+*
+* @param {Object} d - datum
+* @return {String} edge label
+*/
+Chart.prototype.eLabel = function vLabel( d ) {
+	return d.label;
+}; // end METHOD eLabel()
+
+/**
+* ATTRIBUTE: eLength
 *	Specifies edge length. See [D3 documentation]{@link https://github.com/mbostock/d3/wiki/Force-Layout#linkDistance}.
 *
 * @type {Number|Function}
 * @default 20
 */
-Chart.prototype.edgeLength = 20;
+Chart.prototype.eLength = 20;
 
 /**
-* ATTRIBUTE: edgeStrength
+* ATTRIBUTE: eStrength
 *	Specifies edge rigidity. See [D3 documentation]{@link https://github.com/mbostock/d3/wiki/Force-Layout#linkStrength}.
 *
 * @type {Number|Function}
 * @default 1
 */
-Chart.prototype.edgeStrength = 1;
+Chart.prototype.eStrength = 1;
 
 /**
 * ATTRIBUTE: friction
@@ -440,8 +1001,8 @@ Chart.prototype.init = function() {
 		])
 		.nodes( this.vertices )
 		.links( this.edges )
-		.linkStrength( this.edgeStrength )
-		.linkDistance( this.edgeLength )
+		.linkStrength( this.eStrength )
+		.linkDistance( this.eLength )
 		.charge( this.charge )
 		.chargeDistance( this.chargeDistance )
 		.friction( this.friction )
@@ -470,6 +1031,8 @@ Chart.prototype.init = function() {
 
 	// Data elements...
 	$.marks = null;
+	$.vGroup = null;
+	$.eGroup = null;
 	$.vertices = null;
 	$.edges = null;
 
@@ -660,8 +1223,10 @@ Chart.prototype.createVertices = function() {
 	if ( this.$.vertices ) {
 		this.$.vertices.remove();
 	}
-	// Add vertices:
-	this.$.vertices = this.$.marks.selectAll( '.vertex' )
+	this.$.vGroup = this.$.marks.append( 'svg:g' )
+		.attr( 'class', 'vertices' );
+
+	this.$.vertices = this.$.vGroup.selectAll( '.vertex' )
 		.data( this.vertices )
 		.enter()
 		.append( 'svg:circle' )
@@ -671,7 +1236,7 @@ Chart.prototype.createVertices = function() {
 			// .attr( 'color', this._getColor )
 			.attr( 'cx', cx )
 			.attr( 'cy', cy )
-			.attr( 'r', 5 );
+			.attr( 'r', this.radius );
 
 	return this;
 }; // end METHOD createVertices()
@@ -687,8 +1252,10 @@ Chart.prototype.createEdges = function() {
 	if ( this.$.edges ) {
 		this.$.edges.remove();
 	}
-	// Add edges:
-	this.$.edges = this.$.marks.selectAll( '.edge' )
+	this.$.eGroup = this.$.marks.append( 'svg:g' )
+		.attr( 'class', 'edges' );
+
+	this.$.edges = this.$.eGroup.selectAll( '.edge' )
 		.data( this.edges )
 		.enter()
 		.append( 'svg:line' )
@@ -784,7 +1351,7 @@ Chart.prototype.resetMarks = function() {
 	var vertices, edges;
 
 	// Bind the data and update existing vertices:
-	vertices = this.$.marks.selectAll( '.vertex' )
+	vertices = this.$.vGroup.selectAll( '.vertex' )
 		.data( this.vertices )
 		.attr( 'cx', cx )
 		.attr( 'cy', cy );
@@ -800,13 +1367,13 @@ Chart.prototype.resetMarks = function() {
 		// .attr( 'color', this._getColor )
 		.attr( 'cx', cx )
 		.attr( 'cy', cy )
-		.attr( 'r', 5 );
+		.attr( 'r', this.radius );
 
 	// Cache a reference to the vertices:
 	this.$.vertices = vertices;
 
 	// Bind the data and update existing edges:
-	edges = this.$.marks.selectAll( '.edge' )
+	edges = this.$.eGroup.selectAll( '.edge' )
 		.data( this.edges )
 		.attr( 'x1', x1 )
 		.attr( 'y1', y1 )
@@ -1013,10 +1580,7 @@ Chart.prototype.widthChanged = function( oldVal, newVal ) {
 	size = this._force.size();
 	this._force.size( [width, size[1]] );
 
-	if ( !this.$.canvas ) {
-		return;
-	}
-	if ( this.autoUpdate ) {
+	if ( this.$.canvas && this.autoUpdate ) {
 		// [0] Update the SVG canvas:
 		this.$.canvas.attr( 'width', newVal );
 
@@ -1058,10 +1622,7 @@ Chart.prototype.heightChanged = function( oldVal, newVal ) {
 	size = this._force.size();
 	this._force.size( [size[0], height] );
 
-	if ( !this.$.canvas ) {
-		return;
-	}
-	if ( this.autoUpdate ) {
+	if ( this.$.canvas && this.autoUpdate ) {
 		// [0] Update the SVG canvas:
 		this.$.canvas.attr( 'height', newVal );
 
@@ -1261,54 +1822,178 @@ Chart.prototype.paddingTopChanged = function( oldVal, newVal ) {
 }; // end METHOD paddingTopChanged()
 
 /**
-* METHOD: edgeLengthChanged( oldVal, newVal )
-*	Event handler invoked when the `edgeLength` attribute changes.
+* METHOD: radiusChanged( oldVal, newVal )
+*	Event handler invoked when the `radius` attribute changes.
 *
 * @param {Number|Function} oldVal - old value
 * @param {Number|Function} newVal - new value
 */
-Chart.prototype.edgeLengthChanged = function( oldVal, newVal ) {
+Chart.prototype.radiusChanged = function( oldVal, newVal ) {
+	var type = typeof newVal,
+		err;
+	if ( type !== 'function' && (type !== 'number' || newVal !== newVal || newVal < 0) ) {
+		err = new TypeError( 'radius::invalid assignment. Must be a number greater than or equal to 0 or an accessor function. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.radius = oldVal;
+		return;
+	}
+	if ( this.autoUpdate ) {
+		this.$.vertices.attr( 'r', newVal );
+	}
+	this.fire( 'changed', {
+		'attr': 'radius',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD radiusChanged()
+
+/**
+* METHOD: vColorChanged( oldVal, newVal )
+*	Event handler invoked when the `vColor` attribute changes.
+*
+* @param {Null|Function} oldVal - old value
+* @param {Null|Function} newVal - new value
+*/
+Chart.prototype.vColorChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'function' && newVal !== null ) {
+		err = new TypeError( 'vColor::invalid assignment. Must be a function or null. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.vColor = oldVal;
+		return;
+	}
+	if ( this.autoUpdate ) {
+		// TODO: work through logic here. Need to remove old class, if present. Need to apply new class, if present.
+	}
+	this.fire( 'changed', {
+		'attr': 'vColor',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD vColorChanged()
+
+/**
+* METHOD: vLabelChanged( oldVal, newVal )
+*	Event handler invoked when the `vLabel` attribute changes.
+*
+* @param {Function} oldVal - old value
+* @param {Function} newVal - new value
+*/
+Chart.prototype.vLabelChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'function' ) {
+		err = new TypeError( 'vLabel::invalid assignment. Must be a function. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.vLabel = oldVal;
+		return;
+	}
+	// TODO: if label is just text, need to update. If label is displayed as result of some UI, then that interaction should just call the function, so nothing needed to update.
+
+	this.fire( 'changed', {
+		'attr': 'vLabel',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD vLabelChanged()
+
+/**
+* METHOD: eColorChanged( oldVal, newVal )
+*	Event handler invoked when the `eColor` attribute changes.
+*
+* @param {Null|Function} oldVal - old value
+* @param {Null|Function} newVal - new value
+*/
+Chart.prototype.eColorChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'function' && newVal !== null ) {
+		err = new TypeError( 'eColor::invalid assignment. Must be a function or null. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.eColor = oldVal;
+		return;
+	}
+	if ( this.autoUpdate ) {
+		// TODO: work through logic here. Need to remove old class, if present. Need to apply new class, if present.
+	}
+	this.fire( 'changed', {
+		'attr': 'eColor',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD eColorChanged()
+
+/**
+* METHOD: eLabelChanged( oldVal, newVal )
+*	Event handler invoked when the `eLabel` attribute changes.
+*
+* @param {Function} oldVal - old value
+* @param {Function} newVal - new value
+*/
+Chart.prototype.eLabelChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'function' ) {
+		err = new TypeError( 'eLabel::invalid assignment. Must be a function. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.eLabel = oldVal;
+		return;
+	}
+	// TODO: if label is just text, need to update. If label is displayed as result of some UI, then that interaction should just call the function, so nothing needed to update.
+
+	this.fire( 'changed', {
+		'attr': 'eLabel',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD eLabelChanged()
+
+/**
+* METHOD: eLengthChanged( oldVal, newVal )
+*	Event handler invoked when the `eLength` attribute changes.
+*
+* @param {Number|Function} oldVal - old value
+* @param {Number|Function} newVal - new value
+*/
+Chart.prototype.eLengthChanged = function( oldVal, newVal ) {
 	var type = typeof newVal,
 		err;
 	if ( type !== 'function' && (type !== 'number' || newVal !== newVal || newVal <= 0) ) {
-		err = new TypeError( 'edgeLength::invalid assignment. Must be a number greater than 0 or an accessor function. Value: `' + newVal + '`.' );
+		err = new TypeError( 'eLength::invalid assignment. Must be a number greater than 0 or an accessor function. Value: `' + newVal + '`.' );
 		this.fire( 'err', err );
-		this.edgeLength = oldVal;
+		this.eLength = oldVal;
 		return;
 	}
 	this._force.linkDistance( newVal );
 
 	this.fire( 'changed', {
-		'attr': 'edgeLength',
+		'attr': 'eLength',
 		'prev': oldVal,
 		'curr': newVal
 	});
-}; // end METHOD edgeLengthChanged()
+}; // end METHOD eLengthChanged()
 
 /**
-* METHOD: edgeStrengthChanged( oldVal, newVal )
-*	Event handler invoked when the `edgeStrength` attribute changes.
+* METHOD: eStrengthChanged( oldVal, newVal )
+*	Event handler invoked when the `eStrength` attribute changes.
 *
 * @param {Number|Function} oldVal - old value
 * @param {Number|Function} newVal - new value
 */
-Chart.prototype.edgeStrengthChanged = function( oldVal, newVal ) {
+Chart.prototype.eStrengthChanged = function( oldVal, newVal ) {
 	var type = typeof newVal,
 		err;
 	if ( type !== 'function' && (type !== 'number' || newVal !== newVal || newVal < 0 || newVal > 1) ) {
-		err = new TypeError( 'edgeStrength::invalid assignment. Must be a number between 0 and 1 or an accessor function. Value: `' + newVal + '`.' );
+		err = new TypeError( 'eStrength::invalid assignment. Must be a number between 0 and 1 or an accessor function. Value: `' + newVal + '`.' );
 		this.fire( 'err', err );
-		this.edgeStrength = oldVal;
+		this.eStrength = oldVal;
 		return;
 	}
 	this._force.linkStrength( newVal );
 
 	this.fire( 'changed', {
-		'attr': 'edgeStrength',
+		'attr': 'eStrength',
 		'prev': oldVal,
 		'curr': newVal
 	});
-}; // end METHOD edgeStrengthChanged()
+}; // end METHOD eStrengthChanged()
 
 /**
 * METHOD: frictionChanged( oldVal, newVal )

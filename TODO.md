@@ -5,19 +5,16 @@ TODO
 2. Update favicon
 3. Update stream implementation
 	- readable state should be object mode
-4. vertex color (`vColor`)
-	- 	color (class) accessor
-5. vertex label (`vLabel`)
-	-	label accessor
-6. edge color (`eColor`)
-	- 	color (class) accessor
-7. edge label (`eLabel`)
-	-	label accessor
+4. 
+5. eWidth (?)
+	-	Do we want to allow edge width encoding??? Adjusting vertex radius is one thing, but edge width is not as straightforward a visual encoding (interpretation)
+6. 
+7. 
 8. static mode
 9. 
-10. edges group (marks)
-11. vertices group (marks)
-12. radiusChanged callback
+10. edges group (marks) --> eGroup
+11. vertices group (marks) --> vGroup
+12. 
 13. 
 14. self-connections (?)
 15. directed connections (?)

@@ -345,8 +345,8 @@ Chart.prototype.init = function() {
 		])
 		.nodes( this.vertices )
 		.links( this.edges )
-		.linkStrength( this.edgeStrength )
-		.linkDistance( this.edgeLength )
+		.linkStrength( this.eStrength )
+		.linkDistance( this.eLength )
 		.charge( this.charge )
 		.chargeDistance( this.chargeDistance )
 		.friction( this.friction )
@@ -375,6 +375,8 @@ Chart.prototype.init = function() {
 
 	// Data elements...
 	$.marks = null;
+	$.vGroup = null;
+	$.eGroup = null;
 	$.vertices = null;
 	$.edges = null;
 
@@ -565,8 +567,10 @@ Chart.prototype.createVertices = function() {
 	if ( this.$.vertices ) {
 		this.$.vertices.remove();
 	}
-	// Add vertices:
-	this.$.vertices = this.$.marks.selectAll( '.vertex' )
+	this.$.vGroup = this.$.marks.append( 'svg:g' )
+		.attr( 'class', 'vertices' );
+
+	this.$.vertices = this.$.vGroup.selectAll( '.vertex' )
 		.data( this.vertices )
 		.enter()
 		.append( 'svg:circle' )
@@ -576,7 +580,7 @@ Chart.prototype.createVertices = function() {
 			// .attr( 'color', this._getColor )
 			.attr( 'cx', cx )
 			.attr( 'cy', cy )
-			.attr( 'r', 5 );
+			.attr( 'r', this.radius );
 
 	return this;
 }; // end METHOD createVertices()
@@ -592,8 +596,10 @@ Chart.prototype.createEdges = function() {
 	if ( this.$.edges ) {
 		this.$.edges.remove();
 	}
-	// Add edges:
-	this.$.edges = this.$.marks.selectAll( '.edge' )
+	this.$.eGroup = this.$.marks.append( 'svg:g' )
+		.attr( 'class', 'edges' );
+
+	this.$.edges = this.$.eGroup.selectAll( '.edge' )
 		.data( this.edges )
 		.enter()
 		.append( 'svg:line' )
@@ -689,7 +695,7 @@ Chart.prototype.resetMarks = function() {
 	var vertices, edges;
 
 	// Bind the data and update existing vertices:
-	vertices = this.$.marks.selectAll( '.vertex' )
+	vertices = this.$.vGroup.selectAll( '.vertex' )
 		.data( this.vertices )
 		.attr( 'cx', cx )
 		.attr( 'cy', cy );
@@ -705,13 +711,13 @@ Chart.prototype.resetMarks = function() {
 		// .attr( 'color', this._getColor )
 		.attr( 'cx', cx )
 		.attr( 'cy', cy )
-		.attr( 'r', 5 );
+		.attr( 'r', this.radius );
 
 	// Cache a reference to the vertices:
 	this.$.vertices = vertices;
 
 	// Bind the data and update existing edges:
-	edges = this.$.marks.selectAll( '.edge' )
+	edges = this.$.eGroup.selectAll( '.edge' )
 		.data( this.edges )
 		.attr( 'x1', x1 )
 		.attr( 'y1', y1 )
@@ -918,10 +924,7 @@ Chart.prototype.widthChanged = function( oldVal, newVal ) {
 	size = this._force.size();
 	this._force.size( [width, size[1]] );
 
-	if ( !this.$.canvas ) {
-		return;
-	}
-	if ( this.autoUpdate ) {
+	if ( this.$.canvas && this.autoUpdate ) {
 		// [0] Update the SVG canvas:
 		this.$.canvas.attr( 'width', newVal );
 
@@ -963,10 +966,7 @@ Chart.prototype.heightChanged = function( oldVal, newVal ) {
 	size = this._force.size();
 	this._force.size( [size[0], height] );
 
-	if ( !this.$.canvas ) {
-		return;
-	}
-	if ( this.autoUpdate ) {
+	if ( this.$.canvas && this.autoUpdate ) {
 		// [0] Update the SVG canvas:
 		this.$.canvas.attr( 'height', newVal );
 
@@ -1164,6 +1164,130 @@ Chart.prototype.paddingTopChanged = function( oldVal, newVal ) {
 		'curr': newVal
 	});
 }; // end METHOD paddingTopChanged()
+
+/**
+* METHOD: radiusChanged( oldVal, newVal )
+*	Event handler invoked when the `radius` attribute changes.
+*
+* @param {Number|Function} oldVal - old value
+* @param {Number|Function} newVal - new value
+*/
+Chart.prototype.radiusChanged = function( oldVal, newVal ) {
+	var type = typeof newVal,
+		err;
+	if ( type !== 'function' && (type !== 'number' || newVal !== newVal || newVal < 0) ) {
+		err = new TypeError( 'radius::invalid assignment. Must be a number greater than or equal to 0 or an accessor function. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.radius = oldVal;
+		return;
+	}
+	if ( this.autoUpdate ) {
+		this.$.vertices.attr( 'r', newVal );
+	}
+	this.fire( 'changed', {
+		'attr': 'radius',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD radiusChanged()
+
+/**
+* METHOD: vColorChanged( oldVal, newVal )
+*	Event handler invoked when the `vColor` attribute changes.
+*
+* @param {Null|Function} oldVal - old value
+* @param {Null|Function} newVal - new value
+*/
+Chart.prototype.vColorChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'function' && newVal !== null ) {
+		err = new TypeError( 'vColor::invalid assignment. Must be a function or null. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.vColor = oldVal;
+		return;
+	}
+	if ( this.autoUpdate ) {
+		// TODO: work through logic here. Need to remove old class, if present. Need to apply new class, if present.
+	}
+	this.fire( 'changed', {
+		'attr': 'vColor',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD vColorChanged()
+
+/**
+* METHOD: vLabelChanged( oldVal, newVal )
+*	Event handler invoked when the `vLabel` attribute changes.
+*
+* @param {Function} oldVal - old value
+* @param {Function} newVal - new value
+*/
+Chart.prototype.vLabelChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'function' ) {
+		err = new TypeError( 'vLabel::invalid assignment. Must be a function. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.vLabel = oldVal;
+		return;
+	}
+	// TODO: if label is just text, need to update. If label is displayed as result of some UI, then that interaction should just call the function, so nothing needed to update.
+
+	this.fire( 'changed', {
+		'attr': 'vLabel',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD vLabelChanged()
+
+/**
+* METHOD: eColorChanged( oldVal, newVal )
+*	Event handler invoked when the `eColor` attribute changes.
+*
+* @param {Null|Function} oldVal - old value
+* @param {Null|Function} newVal - new value
+*/
+Chart.prototype.eColorChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'function' && newVal !== null ) {
+		err = new TypeError( 'eColor::invalid assignment. Must be a function or null. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.eColor = oldVal;
+		return;
+	}
+	if ( this.autoUpdate ) {
+		// TODO: work through logic here. Need to remove old class, if present. Need to apply new class, if present.
+	}
+	this.fire( 'changed', {
+		'attr': 'eColor',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD eColorChanged()
+
+/**
+* METHOD: eLabelChanged( oldVal, newVal )
+*	Event handler invoked when the `eLabel` attribute changes.
+*
+* @param {Function} oldVal - old value
+* @param {Function} newVal - new value
+*/
+Chart.prototype.eLabelChanged = function( oldVal, newVal ) {
+	var err;
+	if ( typeof newVal !== 'function' ) {
+		err = new TypeError( 'eLabel::invalid assignment. Must be a function. Value: `' + newVal + '`.' );
+		this.fire( 'err', err );
+		this.eLabel = oldVal;
+		return;
+	}
+	// TODO: if label is just text, need to update. If label is displayed as result of some UI, then that interaction should just call the function, so nothing needed to update.
+
+	this.fire( 'changed', {
+		'attr': 'eLabel',
+		'prev': oldVal,
+		'curr': newVal
+	});
+}; // end METHOD eLabelChanged()
 
 /**
 * METHOD: eLengthChanged( oldVal, newVal )
