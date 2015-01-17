@@ -63,7 +63,12 @@
 		el.vertices = body.vertices;
 		el.edges = body.edges;
 
+		// FIXME
 		el.reset();
+
+		el.radius = function radius() {
+			return Math.round( Math.random()*10 );
+		};
 	} // end FUNCTION onData()
 
 
