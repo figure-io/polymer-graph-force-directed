@@ -54,7 +54,7 @@ el.vertices = [
 ];
 ```
 
-Note: when storing associated node data, avoid the following reserved attributes: `index`, `x`, `y`, `px`, `py`, `fixed`, and `weight`.
+Note: when storing associated node data, the following attributes are [reserved](https://github.com/mbostock/d3/wiki/Force-Layout#nodes) for internal use: `index`, `x`, `y`, `px`, `py`, `fixed`, and `weight`.
 
 TODO: define vertex data behavior. How is that data made meaningful? Is it provided on events (hover, click, etc) along with position for the user to deal with, or some other mechanism?
 
