@@ -72,6 +72,8 @@ el.edges = [
 ];
 ```
 
+Note: once the graph is initialized, the `source` and `target` values are [__overwritten__](https://github.com/mbostock/d3/wiki/Force-Layout#links) to point to the vertex `array` element, rather than the element index.
+
 
 #### el.config
 
