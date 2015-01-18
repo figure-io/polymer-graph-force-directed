@@ -43,7 +43,7 @@ The component has the following public attributes and methods...
 
 #### el.vertices
 
-Graph vertices.
+`Array` of graph vertices.
 
 ``` javascript
 el.vertices = [
@@ -59,7 +59,7 @@ TODO: define vertex data behavior. How is that data made meaningful? Is it provi
 
 #### el.edges
 
-Graph edges.
+`Array` of graph edges, where each `array` element is an `object` having `source` and `target` attributes. The source and target values should correspond to vertex indices in `el.vertices`.
 
 ``` javascript
 el.edges = [
@@ -69,8 +69,6 @@ el.edges = [
 	...
 ];
 ```
-
-TODO: detail edge data structure.
 
 
 #### el.config
@@ -160,11 +158,11 @@ el.radius = function radius( d, i ) {
 
 #### el.vColor
 
-Defines the vertex color class accessor. Default is `null`.
+Defines the vertex color __data attribute__ accessor. Default is `null`.
 
 ``` javascript
 el.vColor = function vColor( d, i ) {
-	return 'vertex-pink';
+	return 'vertex-color-' + i;
 };
 ```
 
@@ -188,11 +186,11 @@ el.vLabel = function vLabel( d, i ) {
 
 #### el.eColor
 
-Defines the edge color class accessor. Default is `null`.
+Defines the edge color __data attribute__ accessor. Default is `null`.
 
 ``` javascript
 el.eColor = function eColor( d, i ) {
-	return 'edge-red';
+	return d.color;
 };
 ```
 

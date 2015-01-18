@@ -57,26 +57,74 @@ var EVENTS = [
 
 // FUNCTIONS //
 
+/**
+* FUNCTION: cx( d )
+*	Vertex x-position accessor.
+*
+* @private
+* @param {Object} d - datum
+* @returns {Number} x-position
+*/
 function cx( d ) {
 	return d.x;
 }
 
+/**
+* FUNCTION: cy( d )
+*	Vertex y-position accessor.
+*
+* @private
+* @param {Object} d - datum
+* @returns {Number} y-position
+*/
 function cy( d ) {
 	return d.y;
 }
 
+/**
+* FUNCTION: x1( d )
+*	Edge source x-position accessor.
+*
+* @private
+* @param {Object} d - datum
+* @returns {Number} x-position
+*/
 function x1( d ) {
 	return d.source.x;
 }
 
+/**
+* FUNCTION: y1( d )
+*	Edge source y-position accessor.
+*
+* @private
+* @param {Object} d - datum
+* @returns {Number} y-position
+*/
 function y1( d ) {
 	return d.source.y;
 }
 
+/**
+* FUNCTION: x2( d )
+*	Edge target x-position accessor.
+*
+* @private
+* @param {Object} d - datum
+* @returns {Number} x-position
+*/
 function x2( d ) {
 	return d.target.x;
 }
 
+/**
+* FUNCTION: y2( d )
+*	Edge target y-position accessor.
+*
+* @private
+* @param {Object} d - datum
+* @returns {Number} y-position
+*/
 function y2( d ) {
 	return d.target.y;
 }
@@ -576,8 +624,8 @@ Chart.prototype.createVertices = function() {
 		.append( 'svg:circle' )
 			.attr( 'property', 'circle vertex' )
 			.attr( 'class', 'vertex' )
-			// .attr( 'data-label', this._getLabel )
-			// .attr( 'color', this._getColor )
+			.attr( 'data-label', this.vLabel )
+			.attr( 'data-color', ( this.vColor ) ? this.vColor : '' )
 			.attr( 'cx', cx )
 			.attr( 'cy', cy )
 			.attr( 'r', this.radius );
@@ -605,8 +653,8 @@ Chart.prototype.createEdges = function() {
 		.append( 'svg:line' )
 			.attr( 'property', 'line edge' )
 			.attr( 'class', 'edge' )
-			// .attr( 'data-label', this._getLabel )
-			// .attr( 'color', this._getColor )
+			.attr( 'data-label', this.eLabel )
+			.attr( 'data-color', ( this.eColor ) ? this.eColor : '' )
 			.attr( 'x1', x1 )
 			.attr( 'y1', y1 )
 			.attr( 'x2', x2 )
@@ -647,6 +695,8 @@ Chart.prototype.clear = function() {
 	// Remove the graph:
 	this.vertices.length = 0;
 	this.edges.length = 0;
+
+	// TODO: need call update method
 
 	return this;
 }; // end METHOD clear()
@@ -692,13 +742,17 @@ Chart.prototype.resetLayout = function() {
 * @returns {DOMElement} element instance
 */
 Chart.prototype.resetMarks = function() {
-	var vertices, edges;
+	var vertices,
+		edges;
 
 	// Bind the data and update existing vertices:
 	vertices = this.$.vGroup.selectAll( '.vertex' )
 		.data( this.vertices )
+		.attr( 'data-label', this.vLabel )
+		.attr( 'data-color', ( this.vColor ) ? this.vColor : '' )
 		.attr( 'cx', cx )
-		.attr( 'cy', cy );
+		.attr( 'cy', cy )
+		.attr( 'r', this.radius );
 
 	// Remove any old vertices:
 	vertices.exit().remove();
@@ -707,8 +761,8 @@ Chart.prototype.resetMarks = function() {
 	vertices.enter().append( 'svg:circle' )
 		.attr( 'property', 'circle vertex' )
 		.attr( 'class', 'vertex' )
-		// .attr( 'data-label', this._getLabel )
-		// .attr( 'color', this._getColor )
+		.attr( 'data-label', this.vLabel )
+		.attr( 'data-color', ( this.vColor ) ? this.vColor : '' )
 		.attr( 'cx', cx )
 		.attr( 'cy', cy )
 		.attr( 'r', this.radius );
@@ -719,6 +773,8 @@ Chart.prototype.resetMarks = function() {
 	// Bind the data and update existing edges:
 	edges = this.$.eGroup.selectAll( '.edge' )
 		.data( this.edges )
+		.attr( 'data-label', this.eLabel )
+		.attr( 'data-color', ( this.eColor ) ? this.eColor : '' )
 		.attr( 'x1', x1 )
 		.attr( 'y1', y1 )
 		.attr( 'x2', x2 )
@@ -731,6 +787,8 @@ Chart.prototype.resetMarks = function() {
 	edges.enter().append( 'svg:line' )
 		.attr( 'property', 'line edge' )
 		.attr( 'class', 'edge' )
+		.attr( 'data-label', this.eLabel )
+		.attr( 'data-color', ( this.eColor ) ? this.eColor : '' )
 		.attr( 'x1', x1 )
 		.attr( 'y1', y1 )
 		.attr( 'x2', x2 )
