@@ -50,8 +50,13 @@ var EVENTS = [
 	'changed',
 	'err',
 
+	'tick',
+
 	'resized',
-	'clicked'
+
+	'clicked',
+	'clicked.vertex',
+	'clicked.edge'
 ];
 
 
@@ -399,12 +404,15 @@ Chart.prototype.init = function() {
 		.chargeDistance( this.chargeDistance )
 		.friction( this.friction )
 		.gravity( this.gravity )
-		.theta( this.theta );
+		.theta( this.theta )
+		.on( 'tick', this.onTick.bind( this ) );
 
 	// Stream...
 	this._stream = null;
 
 	// Interaction...
+	this._onVertexClicked = this.onVertexClicked.bind( this );
+	this._onEdgeClicked = this.onEdgeClicked.bind( this );
 	this._onResize = delayed( this.onResize.bind( this ), 400 );
 
 	// Element cache...
@@ -490,8 +498,8 @@ Chart.prototype.create = function() {
 		.createBackground()
 		.createLayout()
 		.createMarks()
-		.createVertices()
 		.createEdges()
+		.createVertices()
 		.createTitle();
 
 	return this;
@@ -605,35 +613,6 @@ Chart.prototype.createMarks = function() {
 }; // end METHOD createMarks()
 
 /**
-* METHOD: createVertices()
-*	Creates graph vertices.
-*
-* @returns {DOMElement} element instance
-*/
-Chart.prototype.createVertices = function() {
-	// Remove any existing vertices...
-	if ( this.$.vertices ) {
-		this.$.vertices.remove();
-	}
-	this.$.vGroup = this.$.marks.append( 'svg:g' )
-		.attr( 'class', 'vertices' );
-
-	this.$.vertices = this.$.vGroup.selectAll( '.vertex' )
-		.data( this.vertices )
-		.enter()
-		.append( 'svg:circle' )
-			.attr( 'property', 'circle vertex' )
-			.attr( 'class', 'vertex' )
-			.attr( 'data-label', this.vLabel )
-			.attr( 'data-color', ( this.vColor ) ? this.vColor : '' )
-			.attr( 'cx', cx )
-			.attr( 'cy', cy )
-			.attr( 'r', this.radius );
-
-	return this;
-}; // end METHOD createVertices()
-
-/**
 * METHOD: createEdges()
 *	Creates graph edges.
 *
@@ -654,14 +633,45 @@ Chart.prototype.createEdges = function() {
 			.attr( 'property', 'line edge' )
 			.attr( 'class', 'edge' )
 			.attr( 'data-label', this.eLabel )
-			.attr( 'data-color', ( this.eColor ) ? this.eColor : '' )
+			.attr( 'data-color', ( this.eColor ) ? this.eColor : 'basic-edge' )
 			.attr( 'x1', x1 )
 			.attr( 'y1', y1 )
 			.attr( 'x2', x2 )
-			.attr( 'y2', y2 );
+			.attr( 'y2', y2 )
+			.on( 'click', this._onEdgeClicked );
 
 	return this;
 }; // end METHOD createEdges()
+
+/**
+* METHOD: createVertices()
+*	Creates graph vertices.
+*
+* @returns {DOMElement} element instance
+*/
+Chart.prototype.createVertices = function() {
+	// Remove any existing vertices...
+	if ( this.$.vertices ) {
+		this.$.vertices.remove();
+	}
+	this.$.vGroup = this.$.marks.append( 'svg:g' )
+		.attr( 'class', 'vertices' );
+
+	this.$.vertices = this.$.vGroup.selectAll( '.vertex' )
+		.data( this.vertices )
+		.enter()
+		.append( 'svg:circle' )
+			.attr( 'property', 'circle vertex' )
+			.attr( 'class', 'vertex' )
+			.attr( 'data-label', this.vLabel )
+			.attr( 'data-color', ( this.vColor ) ? this.vColor : 'basic-vertex' )
+			.attr( 'cx', cx )
+			.attr( 'cy', cy )
+			.attr( 'r', this.radius )
+			.on( 'click', this._onVertexClicked );
+
+	return this;
+}; // end METHOD createVertices()
 
 /**
 * METHOD: createTitle()
@@ -749,7 +759,7 @@ Chart.prototype.resetMarks = function() {
 	vertices = this.$.vGroup.selectAll( '.vertex' )
 		.data( this.vertices )
 		.attr( 'data-label', this.vLabel )
-		.attr( 'data-color', ( this.vColor ) ? this.vColor : '' )
+		.attr( 'data-color', ( this.vColor ) ? this.vColor : 'basic-vertex' )
 		.attr( 'cx', cx )
 		.attr( 'cy', cy )
 		.attr( 'r', this.radius );
@@ -762,10 +772,11 @@ Chart.prototype.resetMarks = function() {
 		.attr( 'property', 'circle vertex' )
 		.attr( 'class', 'vertex' )
 		.attr( 'data-label', this.vLabel )
-		.attr( 'data-color', ( this.vColor ) ? this.vColor : '' )
+		.attr( 'data-color', ( this.vColor ) ? this.vColor : 'basic-vertex' )
 		.attr( 'cx', cx )
 		.attr( 'cy', cy )
-		.attr( 'r', this.radius );
+		.attr( 'r', this.radius )
+		.on( 'click', this._onVertexClicked );
 
 	// Cache a reference to the vertices:
 	this.$.vertices = vertices;
@@ -774,7 +785,7 @@ Chart.prototype.resetMarks = function() {
 	edges = this.$.eGroup.selectAll( '.edge' )
 		.data( this.edges )
 		.attr( 'data-label', this.eLabel )
-		.attr( 'data-color', ( this.eColor ) ? this.eColor : '' )
+		.attr( 'data-color', ( this.eColor ) ? this.eColor : 'basic-edge' )
 		.attr( 'x1', x1 )
 		.attr( 'y1', y1 )
 		.attr( 'x2', x2 )
@@ -788,11 +799,12 @@ Chart.prototype.resetMarks = function() {
 		.attr( 'property', 'line edge' )
 		.attr( 'class', 'edge' )
 		.attr( 'data-label', this.eLabel )
-		.attr( 'data-color', ( this.eColor ) ? this.eColor : '' )
+		.attr( 'data-color', ( this.eColor ) ? this.eColor : 'basic-edge' )
 		.attr( 'x1', x1 )
 		.attr( 'y1', y1 )
 		.attr( 'x2', x2 )
-		.attr( 'y2', y2 );
+		.attr( 'y2', y2 )
+		.on( 'click', this._onEdgeClicked );
 
 	// Cache a reference to the edges:
 	this.$.edges = edges;
@@ -1440,6 +1452,7 @@ Chart.prototype.chargeChanged = function( oldVal, newVal ) {
 	this._force.charge( newVal );
 
 	if ( this.autoUpdate ) {
+		// FIXME:
 		this.reset();
 	}
 	this.fire( 'changed', {
@@ -1584,6 +1597,67 @@ Chart.prototype.onResize = function() {
 	}
 	this.width = this.clientWidth;
 }; // end METHOD onResize()
+
+/**
+* METHOD: onTick( d, i )
+*	Event listener invoked on each simulation tick.
+*
+* @param {Object} d - datum
+* @param {Number} i - index
+*/
+Chart.prototype.onTick = function( d, i ) {
+	var evt;
+
+	this.$.vertices
+		.attr( 'cx', cx )
+		.attr( 'cy', cy );
+
+	this.$.edges
+		.attr( 'x1', x1 )
+		.attr( 'x2', x2 )
+		.attr( 'y1', y1 )
+		.attr( 'y2', y2 );
+
+	evt = new CustomEvent( 'tick', {
+		'detail': {
+			'datum': d,
+			'index': i
+		}
+	});
+	this.fire( 'tick', evt );
+}; // end METHOD onTick()
+
+/**
+* METHOD: onVertexClicked( d, i )
+*	Click listener for graph vertices.
+*
+* @param {Object} d - data
+* @param {Number} i - index
+* @returns {Boolean} false
+*/
+Chart.prototype.onVertexClicked = function( d, i ) {
+	var evt = this._d3.event;
+	evt.datum = d;
+	evt.index = i;
+	this.fire( 'clicked.vertex', evt );
+	return false;
+}; // end METHOD onVertexClicked()
+
+/**
+* METHOD: onEdgeClicked( d, i )
+*	Click listener for graph edges.
+*
+* @param {Object} d - data
+* @param {Number} i - index
+* @returns {Boolean} false
+*/
+Chart.prototype.onEdgeClicked = function( d, i ) {
+	var evt = this._d3.event;
+	evt.datum = d;
+	evt.index = i;
+	this.fire( 'clicked.edge', evt );
+	return false;
+}; // end METHOD onEdgeClicked()
 
 /**
 * METHOD: stream( [options])

@@ -65,14 +65,14 @@ Graph edges, where each `array` element is an `object` having `source` and `targ
 
 ``` javascript
 el.edges = [
-	{'source': 0, 'target': 5},
-	{'source': 2, 'target': 14},
-	{'source': 7, 'target': 8},
+	{'source': 0, 'target': 5, 'label': 'foo'},
+	{'source': 2, 'target': 14, 'label': 'bar'},
+	{'source': 7, 'target': 8, 'label': 'baz'},
 	...
 ];
 ```
 
-Note: once the graph is initialized, the `source` and `target` values are [__overwritten__](https://github.com/mbostock/d3/wiki/Force-Layout#links) to point to the vertex `array` element, rather than the element index.
+Note: once the graph is initialized, the `source` and `target` values are [__overwritten__](https://github.com/mbostock/d3/wiki/Force-Layout#links) to point to the vertex `array` element, rather than the element index. Any other attributes are unaffected.
 
 
 #### el.config

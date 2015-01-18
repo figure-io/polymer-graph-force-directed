@@ -1,291 +1,299 @@
 /* COLORS */
 
+[data-color="basic-vertex"] {
+	fill: #474747;
+}
+
+[data-color="basic-edge"] {
+	stroke: #474747;
+}
+
 /* D3: Category10 */
 .category10-1,
 [data-color="category10-1"] {
-	stroke: #1f77b4;
+	fill: #1f77b4;
 }
 .category10-2,
 [data-color="category10-2"] {
-	stroke: #ff7f0e;
+	fill: #ff7f0e;
 }
 .category10-3,
 [data-color="category10-3"] {
-	stroke: #2ca02c;
+	fill: #2ca02c;
 }
 .category10-4,
 [data-color="category10-4"] {
-	stroke: #d62728;
+	fill: #d62728;
 }
 .category10-5,
 [data-color="category10-5"] {
-	stroke: #9467bd;
+	fill: #9467bd;
 }
 .category10-6,
 [data-color="category10-6"] {
-	stroke: #8c564b;
+	fill: #8c564b;
 }
 .category10-7,
 [data-color="category10-7"] {
-	stroke: #e377c2;
+	fill: #e377c2;
 }
 .category10-8,
 [data-color="category10-8"] {
-	stroke: #7f7f7f;
+	fill: #7f7f7f;
 }
 .category10-9,
 [data-color="category10-9"] {
-	stroke: #bcdb22;
+	fill: #bcdb22;
 }
 .category10-10,
 [data-color="category10-10"] {
-	stroke: #17becf;
+	fill: #17becf;
 }
 
 /* D3: category20 */
 .category20-1,
 [data-color="category20-1"] {
-	stroke: #1f77b4;
+	fill: #1f77b4;
 }
 .category20-2,
 [data-color="category20-2"] {
-	stroke: #aec7e8;
+	fill: #aec7e8;
 }
 .category20-3,
 [data-color="category20-3"] {
-	stroke: #ff7f0e;
+	fill: #ff7f0e;
 }
 .category20-4,
 [data-color="category20-4"] {
-	stroke: #ffbb78;
+	fill: #ffbb78;
 }
 .category20-5,
 [data-color="category20-5"] {
-	stroke: #2ca02c;
+	fill: #2ca02c;
 }
 .category20-6,
 [data-color="category20-6"] {
-	stroke: #98df8a;
+	fill: #98df8a;
 }
 .category20-7,
 [data-color="category20-7"] {
-	stroke: #d62728;
+	fill: #d62728;
 }
 .category20-8,
 [data-color="category20-8"] {
-	stroke: #ff9896;
+	fill: #ff9896;
 }
 .category20-9,
 [data-color="category20-9"] {
-	stroke: #9467bd;
+	fill: #9467bd;
 }
 .category20-10,
 [data-color="category20-10"] {
-	stroke: #c5b0d5;
+	fill: #c5b0d5;
 }
 .category20-11,
 [data-color="category20-11"] {
-	stroke: #8c564b;
+	fill: #8c564b;
 }
 .category20-12,
 [data-color="category20-12"] {
-	stroke: #c49c94;
+	fill: #c49c94;
 }
 .category20-13,
 [data-color="category20-13"] {
-	stroke: #e377c2;
+	fill: #e377c2;
 }
 .category20-14,
 [data-color="category20-14"] {
-	stroke: #f7b6d2;
+	fill: #f7b6d2;
 }
 .category20-15,
 [data-color="category20-15"] {
-	stroke: #7f7f7f;
+	fill: #7f7f7f;
 }
 .category20-16,
 [data-color="category20-16"] {
-	stroke: #c7c7c7;
+	fill: #c7c7c7;
 }
 .category20-17,
 [data-color="category20-17"] {
-	stroke: #bcbd22;
+	fill: #bcbd22;
 }
 .category20-18,
 [data-color="category20-18"] {
-	stroke: #dbdb8d;
+	fill: #dbdb8d;
 }
 .category20-19,
 [data-color="category20-19"] {
-	stroke: #17becf;
+	fill: #17becf;
 }
 .category20-20,
 [data-color="category20-20"] {
-	stroke: #9edae5;
+	fill: #9edae5;
 }
 
 /* D3: category20b */
 .category20b-1,
 [data-color="category20b-1"] {
-	stroke: #393b79;
+	fill: #393b79;
 }
 .category20b-2,
 [data-color="category20b-2"] {
-	stroke: #5254a3;
+	fill: #5254a3;
 }
 .category20b-3,
 [data-color="category20b-3"] {
-	stroke: #6b6ecf;
+	fill: #6b6ecf;
 }
 .category20b-4,
 [data-color="category20b-4"] {
-	stroke: #9c9ede;
+	fill: #9c9ede;
 }
 .category20b-5,
 [data-color="category20b-5"] {
-	stroke: #637939;
+	fill: #637939;
 }
 .category20b-6,
 [data-color="category20b-6"] {
-	stroke: #8ca252;
+	fill: #8ca252;
 }
 .category20b-7,
 [data-color="category20b-7"] {
-	stroke: #b5cf6b;
+	fill: #b5cf6b;
 }
 .category20b-8,
 [data-color="category20b-8"] {
-	stroke: #cedb9c;
+	fill: #cedb9c;
 }
 .category20b-9,
 [data-color="category20b-9"] {
-	stroke: #8c6d31;
+	fill: #8c6d31;
 }
 .category20b-10,
 [data-color="category20b-10"] {
-	stroke: #bd9e39;
+	fill: #bd9e39;
 }
 .category20b-11,
 [data-color="category20b-11"] {
-	stroke: #e7ba52;
+	fill: #e7ba52;
 }
 .category20b-12,
 [data-color="category20b-12"] {
-	stroke: #e7cb94;
+	fill: #e7cb94;
 }
 .category20b-13,
 [data-color="category20b-13"] {
-	stroke: #843c39;
+	fill: #843c39;
 }
 .category20b-14,
 [data-color="category20b-14"] {
-	stroke: #ad494a;
+	fill: #ad494a;
 }
 .category20b-15,
 [data-color="category20b-15"] {
-	stroke: #d6616b;
+	fill: #d6616b;
 }
 .category20b-16,
 [data-color="category20b-16"] {
-	stroke: #e7969c;
+	fill: #e7969c;
 }
 .category20b-17,
 [data-color="category20b-17"] {
-	stroke: #7b4173;
+	fill: #7b4173;
 }
 .category20b-18,
 [data-color="category20b-18"] {
-	stroke: #a55194;
+	fill: #a55194;
 }
 .category20b-19,
 [data-color="category20b-19"] {
-	stroke: #ce6dbd;
+	fill: #ce6dbd;
 }
 .category20b-20,
 [data-color="category20b-20"] {
-	stroke: #de9ed6;
+	fill: #de9ed6;
 }
 
 /* D3: category20c */
 .category20c-1,
 [data-color="category20c-1"] {
-	stroke: #3182bd;
+	fill: #3182bd;
 }
 .category20c-2,
 [data-color="category20c-2"] {
-	stroke: #6baed6;
+	fill: #6baed6;
 }
 .category20c-3,
 [data-color="category20c-3"] {
-	stroke: #9ecae1;
+	fill: #9ecae1;
 }
 .category20c-4,
 [data-color="category20c-4"] {
-	stroke: #c6dbef;
+	fill: #c6dbef;
 }
 .category20c-5,
 [data-color="category20c-5"] {
-	stroke: #e6550d;
+	fill: #e6550d;
 }
 .category20c-6,
 [data-color="category20c-6"] {
-	stroke: #fd8d3c;
+	fill: #fd8d3c;
 }
 .category20c-7,
 [data-color="category20c-7"] {
-	stroke: #fdae6b;
+	fill: #fdae6b;
 }
 .category20c-8,
 [data-color="category20c-8"] {
-	stroke: #fdd0a2;
+	fill: #fdd0a2;
 }
 .category20c-9,
 [data-color="category20c-9"] {
-	stroke: #31a354;
+	fill: #31a354;
 }
 .category20c-10,
 [data-color="category20c-10"] {
-	stroke: #74c476;
+	fill: #74c476;
 }
 .category20c-11,
 [data-color="category20c-11"] {
-	stroke: #a1d99b;
+	fill: #a1d99b;
 }
 .category20c-12,
 [data-color="category20c-12"] {
-	stroke: #c7e9c0;
+	fill: #c7e9c0;
 }
 .category20c-13,
 [data-color="category20c-13"] {
-	stroke: #756bb1;
+	fill: #756bb1;
 }
 .category20c-14,
 [data-color="category20c-14"] {
-	stroke: #9e9ac8;
+	fill: #9e9ac8;
 }
 .category20c-15,
 [data-color="category20c-15"] {
-	stroke: #bcbddc;
+	fill: #bcbddc;
 }
 .category20c-16,
 [data-color="category20c-16"] {
-	stroke: #dadaeb;
+	fill: #dadaeb;
 }
 .category20c-17,
 [data-color="category20c-17"] {
-	stroke: #636363;
+	fill: #636363;
 }
 .category20c-18,
 [data-color="category20c-18"] {
-	stroke: #969696;
+	fill: #969696;
 }
 .category20c-19,
 [data-color="category20c-19"] {
-	stroke: #bdbdbd;
+	fill: #bdbdbd;
 }
 .category20c-20,
 [data-color="category20c-20"] {
-	stroke: #d9d9d9;
+	fill: #d9d9d9;
 }
 
 

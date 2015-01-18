@@ -18,6 +18,10 @@
 	margin: 0;
 	margin-left: 1%;
 	margin-right: 1%;
+	margin-bottom: 20px;
+	border-color: rgba(0,0,0,0.1);
+	border-width: 1px;
+	border-style: solid;
 }
 
 .figure,

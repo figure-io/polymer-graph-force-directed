@@ -37,6 +37,8 @@ TODO
 26. 
 27. multiple definitions for graph in chart-metadata-terms
 	-	update to include graph (node-link) defns.
+28. describe how colors work (i.e., how to hook into default color options)
+29. 
 
 
 ## Tests
