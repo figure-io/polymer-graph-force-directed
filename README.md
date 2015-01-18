@@ -43,7 +43,7 @@ The component has the following public attributes and methods...
 
 #### el.vertices
 
-`Array` of graph vertices.
+Graph vertices, where each `array` element is an `object`.
 
 ``` javascript
 el.vertices = [
@@ -54,12 +54,14 @@ el.vertices = [
 ];
 ```
 
+Note: when storing associated node data, avoid the following reserved attributes: `index`, `x`, `y`, `px`, `py`, `fixed`, and `weight`.
+
 TODO: define vertex data behavior. How is that data made meaningful? Is it provided on events (hover, click, etc) along with position for the user to deal with, or some other mechanism?
 
 
 #### el.edges
 
-`Array` of graph edges, where each `array` element is an `object` having `source` and `target` attributes. The source and target values should correspond to vertex indices in `el.vertices`.
+Graph edges, where each `array` element is an `object` having `source` and `target` attributes. The source and target values should correspond to vertex indices in `el.vertices`.
 
 ``` javascript
 el.edges = [
