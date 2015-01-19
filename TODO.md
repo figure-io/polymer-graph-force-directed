@@ -5,11 +5,11 @@ TODO
 2. Update favicon
 3. Update stream implementation
 	- readable state should be object mode
-4. 
+4. general update strategy
 5. eWidth (?)
 	-	Do we want to allow edge width encoding??? Adjusting vertex radius is one thing, but edge width is not as straightforward a visual encoding (interpretation)
 6. 
-7. 
+7. title
 8. static mode
 9. 
 10. should we throttle how often the simulation can be run?
@@ -26,8 +26,12 @@ TODO
 	-	arrows going opposite ways
 17. draggable nodes (`drag()`)
 18. hover event
+	-	hovered.vertex
+	-	hovered.edge
 19. drag event
 20. click event
+	-	clicked.vertex
+	-	clicked.edge
 21. start
 22. stop
 23. tick
@@ -38,7 +42,10 @@ TODO
 27. multiple definitions for graph in chart-metadata-terms
 	-	update to include graph (node-link) defns.
 28. describe how colors work (i.e., how to hook into default color options)
-29. 
+29. legend
+	-	entries
+	-	color classes (?)
+30. 
 
 
 ## Tests
