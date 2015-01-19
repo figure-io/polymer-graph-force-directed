@@ -11,8 +11,12 @@ describe( 'init', function tests() {
 		assert.ok( el.init );
 	});
 
-	it( 'should initialize a data attribute as an empty array', function test() {
-		assert.deepEqual( el.data, [] );
+	it( 'should initialize a vertices attribute as an empty array', function test() {
+		assert.deepEqual( el.vertices, [] );
+	});
+
+	it( 'should initialize an edges attribute as an empty array', function test() {
+		assert.deepEqual( el.edges, [] );
 	});
 
 	it( 'should expose an events attribute listing all publicly emitted events', function test() {

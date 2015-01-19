@@ -864,7 +864,6 @@ Chart.prototype.verticesChanged = function( val, newVal ) {
 		if ( this.$.vertices ) {
 			this.$.vertices.remove();
 		}
-		return;
 	}
 	this.fire( 'vertices', {
 		'type': 'changed'
@@ -912,7 +911,6 @@ Chart.prototype.edgesChanged = function( val, newVal ) {
 		if ( this.$.edges ) {
 			this.$.edges.remove();
 		}
-		return;
 	}
 	this.fire( 'edges', {
 		'type': 'changed'

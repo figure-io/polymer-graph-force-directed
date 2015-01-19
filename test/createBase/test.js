@@ -12,7 +12,7 @@ describe( 'createBase', function tests() {
 	});
 
 	it( 'should create a base SVG canvas', function test() {
-		var el = document.createElement( 'polymer-force-layout' );
+		var el = document.createElement( 'polymer-graph-force-directed' );
 
 		document.body.appendChild( el );
 		el.$.chart.innerHTML = '';
