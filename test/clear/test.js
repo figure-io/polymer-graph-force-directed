@@ -18,7 +18,8 @@ describe( 'clear', function tests() {
 
 	it( 'should reset the chart data', function test() {
 		el.clear();
-		assert.notOk( el.data.length );
+		assert.notOk( el.vertices.length );
+		assert.notOk( el.edges.length );
 	});
 
 	it( 'should not display any marks', function test( done ) {

@@ -1366,7 +1366,10 @@ Chart.prototype.clear = function() {
 	this.vertices.length = 0;
 	this.edges.length = 0;
 
-	// TODO: need call update method
+	// TODO: need call update method; remove the following.
+	if ( this.$.marks ) {
+		this.$.marks.remove();
+	}
 
 	return this;
 }; // end METHOD clear()
