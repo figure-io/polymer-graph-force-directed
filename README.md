@@ -21,7 +21,7 @@ To use the component,
 <html>
 	<head>
 		<script src="path/to/webcomponentsjs/webcomponents.min.js"></script>
-		<link rel="import" href="path/to/polymer-graph-force-directed">
+		<link rel="import" href="path/to/polymer-graph-force-directed.html">
 	</head>
 	<body>
 		<polymer-graph-force-directed id="chart"></polymer-graph-force-directed>
@@ -97,7 +97,7 @@ el.width = 600; // px
 
 #### el.height
 
-Chart canvas height. If not explicitly set, default to the height of the parent node.
+Chart canvas height. If not explicitly set, defaults to the height of the parent node.
 
 ``` javascript
 el.height = 600; // px

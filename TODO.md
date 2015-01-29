@@ -45,7 +45,7 @@ TODO
 29. legend
 	-	entries
 	-	color classes (?)
-30. 
+30. include screenshot in README.
 
 
 ## Tests
